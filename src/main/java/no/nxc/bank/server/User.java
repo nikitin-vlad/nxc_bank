@@ -1,4 +1,4 @@
-package no.nxc.bank;
+package no.nxc.bank.server;
 
 interface User {
 	public String getLogin();
