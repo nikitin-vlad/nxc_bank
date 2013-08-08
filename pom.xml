@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>vlad</groupId>
-	<artifactId>nxc_test</artifactId>
+	<artifactId>nxc_bank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>nxc</name>
+	<name>nxc_bank</name>
 	<description>nxc test project</description>
 	
 	<properties>

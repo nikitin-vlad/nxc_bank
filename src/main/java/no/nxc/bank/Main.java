@@ -1,4 +1,4 @@
-package no.nxc.vn;
+package no.nxc.bank;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

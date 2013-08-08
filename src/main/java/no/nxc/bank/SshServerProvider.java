@@ -1,4 +1,4 @@
-package no.nxc.vn;
+package no.nxc.bank;
 
 import java.io.IOException;
 import java.util.Map;
