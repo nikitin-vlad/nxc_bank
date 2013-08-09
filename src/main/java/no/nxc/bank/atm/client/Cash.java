@@ -1,18 +1,18 @@
 package no.nxc.bank.atm.client;
 
-import javax.xml.bind.annotation.XmlElement;
+//import javax.xml.bind.annotation.XmlElement;
 import java.util.HashMap;
 
 
 public class Cash {
 
-//    private int rating;
-//    private int quantity;
-//
-//    public Cash(int rating, int quantity){
-//        this.rating   = rating;
-//        this.quantity = quantity;
-//    }
+    private int rating;
+    private int quantity;
+
+    public Cash(int rating, int quantity){
+        this.rating   = rating;
+        this.quantity = quantity;
+    }
 //
 //    public int getQuantity() {
 //        return quantity;
@@ -31,7 +31,7 @@ public class Cash {
 //    }
     private HashMap<Integer, Integer> cash;
 
-    public HashMap getCash(){
+    public HashMap<Integer, Integer> getCash(){
         cash = new HashMap<Integer, Integer>();
         return cash;
     }

@@ -19,7 +19,7 @@ public class AtmClient {
         this.cash.put(name, new Cash(100, 30));
     }
 
-    public HashMap getCash(){
+    public HashMap<String, Cash> getCash(){
         return cash;
     }
 
