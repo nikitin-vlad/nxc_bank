@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-class User {
+class User implements XMLEntity {
     private int key;
     private double cash;
     private String name;
