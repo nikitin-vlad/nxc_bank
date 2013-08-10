@@ -1,22 +1,15 @@
-!SESSION 2013-08-10 11:28:42.094 -----------------------------------------------
-eclipse.buildId=4.3.0.I20130605-2000
-java.version=1.6.0_27
-java.vendor=Sun Microsystems Inc.
-BootLoader constants: OS=linux, ARCH=x86, WS=gtk, NL=en_US
-Framework arguments:  -product org.eclipse.epp.package.jee.product
-Command-line arguments:  -os linux -ws gtk -arch x86 -product org.eclipse.epp.package.jee.product
 
-!ENTRY org.eclipse.ui.browser 2 0 2013-08-10 11:28:50.078
-!MESSAGE Internal browser is not available: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
-
-!ENTRY org.eclipse.m2e.logback.appender 2 0 2013-08-10 11:29:24.664
-!MESSAGE CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-wtp does not contain lifecycle mapping metadata
-
-!ENTRY org.eclipse.m2e.logback.appender 2 0 2013-08-10 11:29:24.665
-!MESSAGE CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-egit does not contain lifecycle mapping metadata
-
-!ENTRY org.eclipse.m2e.logback.appender 2 0 2013-08-10 11:29:24.666
-!MESSAGE CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-subversive does not contain lifecycle mapping metadata
-
-!ENTRY org.eclipse.m2e.logback.appender 2 0 2013-08-10 11:29:24.666
-!MESSAGE CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-subclipse does not contain lifecycle mapping metadata
+!ENTRY org.eclipse.core.resources 4 568 2013-08-10 11:34:42.843
+!MESSAGE Could not write workspace metadata '/home/vn/workspace/nxc_bank_root/.metadata/.plugins/org.eclipse.core.resources/.snap'.
+!STACK 0
+java.io.FileNotFoundException: /home/vn/workspace/nxc_bank_root/.metadata/.plugins/org.eclipse.core.resources/.snap (No such file or directory)
+	at java.io.FileOutputStream.openAppend(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:207)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:131)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:45)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:41)
+	at org.eclipse.core.internal.resources.SaveManager.snapTree(SaveManager.java:1450)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1109)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
