@@ -11,13 +11,10 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
 public class SecureSocketServer {
-    public static void main(String[] args) {
-        String storepass = "serverstorepass";
-        String keypass = "serverkeypass";
-
-        String keystoreLocation = SecureSocketServer.class.getClassLoader()
-        		.getResource("ssl/server.jks")
-        		.getFile();
+    public SecureSocketServer(ClientHandlerFactory clientFactory, SSLConfiguration sslConf) {
+        String storepass = sslConf.getStorepass();
+        String keypass = sslConf.getKeypass();
+        String keystoreLocation = sslConf.getJkskeyPath();
 
         System.setProperty("javax.net.ssl.trustStore", keystoreLocation);
         System.setProperty("javax.net.ssl.trustStorePassword", storepass);
@@ -35,7 +32,7 @@ public class SecureSocketServer {
             SSLServerSocketFactory sslServerSocketFactory = sc
                     .getServerSocketFactory();
             SSLServerSocket s = (SSLServerSocket) sslServerSocketFactory
-                    .createServerSocket(8888);
+                    .createServerSocket(sslConf.getPort());
             s.setNeedClientAuth(true);
             
             while (true) {
@@ -43,7 +40,7 @@ public class SecureSocketServer {
                     // Accept incoming connections.
                     SSLSocket sslSocket = (SSLSocket) s.accept();
 
-                    ClientHandler cliThread = new ClientHandler(sslSocket);
+                    ClientHandler cliThread = clientFactory.create(sslSocket);
                     cliThread.start();
                 } catch (IOException ioe) {
                     System.out
@@ -53,8 +50,8 @@ public class SecureSocketServer {
             }
 
         } catch (Exception e) {
-        	e.printStackTrace();
             System.err.println(e.toString());
+        	e.printStackTrace();
         }
     }
 }

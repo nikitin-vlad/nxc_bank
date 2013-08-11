@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><sslConfiguration><jkskeyPath>src/main/resources/ssl/server.jks</jkskeyPath><keypass>serverkeypass</keypass><port>8888</port><storepass>serverstorepass</storepass></sslConfiguration>
