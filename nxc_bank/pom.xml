@@ -21,7 +21,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>no.nxc.vn.Main</mainClass>
+							<mainClass>no.nxc.bank.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

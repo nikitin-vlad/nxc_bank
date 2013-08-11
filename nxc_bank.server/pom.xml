@@ -4,7 +4,59 @@
     <groupId>nxc</groupId>
     <artifactId>nxc_bank</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <relativePath>../nxc_bank/pom.xml</relativePath>
   </parent>
   <artifactId>nxc_bank.server</artifactId>
   <name>nxc_bank.server</name>
+  
+  	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>no.nxc.bank.server.SecureSocketServer</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <!-- here the phase you need -->
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+		</plugins>
+		
+		<resources>
+      		<resource>
+        		<directory>src/main/resources</directory>
+        		<includes>
+          			<include>**/*</include>
+        		</includes>
+    		</resource>
+	    </resources>
+	</build>
+	
 </project>
