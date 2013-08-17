@@ -9,9 +9,7 @@
 		<version>1.0</version>
 	</parent>
 	
-	<groupId>com.nxc</groupId>
 	<artifactId>common</artifactId>
-	<version>1.0</version>
 	<name>common</name>
 	<url>http://maven.apache.org</url>
 	
