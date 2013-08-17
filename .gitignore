@@ -8,6 +8,6 @@
 */.project
 .classpath
 */.classpath
-/atm/.classpath
-/server/.classpath
-/common/.classpath
+atm/.classpath
+server/.classpath
+common/.classpath
