@@ -1,2 +1,13 @@
 *RemoteSystemsTempFiles
 *.metadata
+/target
+*/target
+*/.settings
+.settings
+.project
+*/.project
+.classpath
+*/.classpath
+/atm/.classpath
+/server/.classpath
+/common/.classpath
