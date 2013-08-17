@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.security.cert.Certificate;
+import java.util.Arrays;
 
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
 public class ClientHandler extends Thread {
@@ -16,15 +19,24 @@ public class ClientHandler extends Thread {
     ClientHandler(SSLSocket s) {
         clientSocket = s;
     }
-
+    
+    protected int getClientId () throws Exception {
+        SSLSession session = clientSocket.getSession();
+        Certificate[] certificates = session.getPeerCertificates();
+        if (certificates.length != 1) {
+        	throw new Exception ("Wrong client certificate");
+        }
+        return Arrays.hashCode(certificates[0].getPublicKey().getEncoded());
+    }
+    
     public void run() {
         BufferedReader in = null;
         PrintWriter out = null;
-
         try {
-            in = new BufferedReader(new InputStreamReader(
+            int atmId = this.getClientId();
+        	in = new BufferedReader(new InputStreamReader(
                     clientSocket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(
+        	out = new PrintWriter(new OutputStreamWriter(
                     clientSocket.getOutputStream()));
 
             while (run) {

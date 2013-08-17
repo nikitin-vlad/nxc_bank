@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.util.Arrays;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -18,9 +20,7 @@ public class SecureSocketClient {
         String storepass = "clientstorepass";
         String keypass = "clientkeypass";
 
-        String keystoreLocation = SecureSocketClient.class.getClassLoader()
-        		.getResource("ssl/client.jks")
-        		.getFile();
+        String keystoreLocation = "src/main/resources/ssl/client.jks";
         
         char[] keyStorePassword = storepass.toCharArray();
         System.setProperty("javax.net.ssl.trustStore", keystoreLocation);
@@ -31,6 +31,9 @@ public class SecureSocketClient {
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(new FileInputStream(keystoreLocation), keyStorePassword);
+            
+            Certificate certificate = keyStore.getCertificate("myclient");
+            System.out.println(Arrays.hashCode(certificate.getPublicKey().getEncoded()));
             KeyManagerFactory keyManagerFactory = KeyManagerFactory
                     .getInstance("SunX509");
             keyManagerFactory.init(keyStore, keypass.toCharArray());
