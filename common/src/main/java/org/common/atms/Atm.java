@@ -1,7 +1,5 @@
 package org.common.atms;
 
-import java.util.HashMap;
-
 public class Atm {
 
 	private String id;

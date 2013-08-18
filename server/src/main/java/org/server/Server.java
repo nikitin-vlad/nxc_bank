@@ -1,7 +1,6 @@
 package org.server;
 
 import java.awt.EventQueue;
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,7 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.server.panels.MainForm;
-
+import org.common.configs.Config;
 
  
 
@@ -18,10 +17,9 @@ public class Server {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Server initialization goes here");
 		
-		File file = new File("src/main/resources/jaxb/ssl_config.xml");
 		JAXBContext jaxbContext = JAXBContext.newInstance(SSLConfiguration.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		final SSLConfiguration serverConf = (SSLConfiguration) jaxbUnmarshaller.unmarshal(file);
+		final SSLConfiguration serverConf = (SSLConfiguration) jaxbUnmarshaller.unmarshal(Server.class.getResourceAsStream(Config.sslConfig));
 		
 		ExecutorService exec = Executors.newCachedThreadPool();
 		

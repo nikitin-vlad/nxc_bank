@@ -35,7 +35,7 @@ public class ClientHandler extends Thread {
         ObjectInputStream in = null;
         ObjectOutputStream out = null;
         try {
-            int atmId = this.getClientId();
+            //int atmId = this.getClientId();
         	out = new ObjectOutputStream(clientSocket.getOutputStream());
         	in = new ObjectInputStream(clientSocket.getInputStream());
         	OperationRequest request = null;

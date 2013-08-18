@@ -1,16 +1,11 @@
 package org.atm;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.util.Arrays;
@@ -20,6 +15,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.common.configs.Config;
 import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationType;
@@ -34,7 +30,7 @@ public class SecureSocketClient {
         String storepass = "clientstorepass";
         String keypass = "clientkeypass";
 
-        String keystoreLocation = "src/main/resources/ssl/client.jks";
+        String keystoreLocation = Config.keystoreLocation;
         
         char[] keyStorePassword = storepass.toCharArray();
         System.setProperty("javax.net.ssl.trustStore", keystoreLocation);
@@ -43,7 +39,8 @@ public class SecureSocketClient {
 
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(new FileInputStream(keystoreLocation), keyStorePassword);
+//            keyStore.load(new FileInputStream(keystoreLocation), keyStorePassword);
+            keyStore.load(SecureSocketClient.class.getResourceAsStream(Config.keystoreLocation), keyStorePassword);
             
             Certificate certificate = keyStore.getCertificate("myclient");
             System.out.println(Arrays.hashCode(certificate.getPublicKey().getEncoded()));
