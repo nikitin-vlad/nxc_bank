@@ -1,11 +1,14 @@
 package org.server;
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+
+import org.server.panels.MainForm;
 
 
  
@@ -34,5 +37,16 @@ public class Server {
 			}
 		});
 		System.out.println("Server thread was started");
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainForm window = new MainForm();
+					window.frmBankServer.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});		
 	}
 }
