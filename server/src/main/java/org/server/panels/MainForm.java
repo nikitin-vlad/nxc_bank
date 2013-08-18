@@ -20,7 +20,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-import org.server.dialogs.AccountsAdd;
+import org.server.dialogs.AccountAdd;
+import org.server.dialogs.AtmAdd;
 
 public class MainForm {
 
@@ -47,7 +48,7 @@ public class MainForm {
 		frmBankServer.getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 624, 442);
+		tabbedPane.setBounds(10, 11, 614, 431);
 		frmBankServer.getContentPane().add(tabbedPane);
 		
 		
@@ -58,7 +59,7 @@ public class MainForm {
 		accountsPanel.setLayout(null);
 		
 		JToolBar accountsToolBar = new JToolBar();
-		accountsToolBar.setBounds(0, 0, 619, 28);
+		accountsToolBar.setBounds(0, 0, 609, 23);
 		accountsToolBar.setFloatable(false);
 		accountsPanel.add(accountsToolBar);
 		
@@ -67,7 +68,7 @@ public class MainForm {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				try {
-					AccountsAdd dialog = new AccountsAdd();
+					AccountAdd dialog = new AccountAdd();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
@@ -94,7 +95,7 @@ public class MainForm {
 		accountsToolBar.add(accountsBtnRemove);
 		
 		JPanel accountsListPanel = new JPanel();
-		accountsListPanel.setBounds(10, 39, 190, 364);
+		accountsListPanel.setBounds(10, 34, 190, 358);
 		accountsPanel.add(accountsListPanel);
 		accountsListPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -125,7 +126,7 @@ public class MainForm {
 		accountsListPanel.add(accountsScrollPane);
 		
 		JPanel accountDetailsPanel = new JPanel();
-		accountDetailsPanel.setBounds(210, 39, 399, 364);
+		accountDetailsPanel.setBounds(210, 34, 389, 358);
 		accountsPanel.add(accountDetailsPanel);
 
 		
@@ -137,14 +138,20 @@ public class MainForm {
 		
 		JToolBar atmsToolBar = new JToolBar();
 		atmsToolBar.setFloatable(false);
-		atmsToolBar.setBounds(0, 0, 619, 28);
+		atmsToolBar.setBounds(0, 0, 609, 23);
 		atmsPanel.add(atmsToolBar);
 		
 		atmsBtnAdd = new JButton("Add");
 		atmsBtnAdd.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
+			public void mouseClicked(MouseEvent event) {
+				try {
+					AtmAdd dialog = new AtmAdd();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
 			}
 		});
 		atmsToolBar.add(atmsBtnAdd);
@@ -166,7 +173,7 @@ public class MainForm {
 		atmsToolBar.add(atmsBtnRemove);
 		
 		JPanel atmsListPanel = new JPanel();
-		atmsListPanel.setBounds(10, 39, 190, 364);
+		atmsListPanel.setBounds(10, 34, 190, 358);
 		atmsPanel.add(atmsListPanel);
 		atmsListPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -186,7 +193,7 @@ public class MainForm {
 		atmsListPanel.add(atmsScrollPane);
 		
 		JPanel atmsDetailsPanel = new JPanel();
-		atmsDetailsPanel.setBounds(210, 39, 399, 364);
+		atmsDetailsPanel.setBounds(210, 34, 389, 358);
 		atmsPanel.add(atmsDetailsPanel);
 	}
 }

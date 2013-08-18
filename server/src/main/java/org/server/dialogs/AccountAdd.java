@@ -14,7 +14,7 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AccountsAdd extends JDialog {
+public class AccountAdd extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -22,10 +22,7 @@ public class AccountsAdd extends JDialog {
 	private JFormattedTextField accountAmount;
 	private JCheckBox accountStatus;
 
-	/**
-	 * Create the dialog.
-	 */
-	public AccountsAdd() {
+	public AccountAdd() {
 		setAlwaysOnTop(true);
 		setTitle("Add new Account");
 		setResizable(false);
