@@ -21,6 +21,7 @@ public class AtmAdd extends JDialog {
 	private JCheckBox atmStatus;
 
 	public AtmAdd() {
+		setTitle("Add new ATM");
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 213, 225);
 		getContentPane().setLayout(new BorderLayout());
