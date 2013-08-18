@@ -1,4 +1,4 @@
-package org.server.server;
+package org.server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

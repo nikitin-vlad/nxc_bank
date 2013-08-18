@@ -1,4 +1,4 @@
-package org.server.server.entity;
+package org.server.entity;
 
 public interface XMLEntity {
 

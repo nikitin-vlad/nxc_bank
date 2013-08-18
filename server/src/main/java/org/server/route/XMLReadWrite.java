@@ -1,6 +1,6 @@
-package org.server.server.route;
+package org.server.route;
 
-import org.server.server.entity.XMLEntity;
+import org.server.entity.XMLEntity;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

@@ -1,4 +1,4 @@
-package org.server.server;
+package org.server;
 
 import javax.net.ssl.SSLSocket;
 

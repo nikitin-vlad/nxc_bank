@@ -1,4 +1,4 @@
-package org.server.server;
+package org.server;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
