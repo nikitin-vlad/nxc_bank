@@ -10,6 +10,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+
+import org.common.atms.Atm;
+import org.server.Server;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -62,10 +66,7 @@ public class AtmAdd extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
+				okButton.addActionListener(submit());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -74,13 +75,41 @@ public class AtmAdd extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dispose();
+						close();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	private void close() {
+		dispose();
+		Server.getAtms().setBlocked(false);
+	}
+	
+	private ActionListener submit() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (atmIdentifier.getText().equals("")) {
+					close();
+					return;
+				}
+				if (atmSSLFingerprint.getText().equals("")) {
+					close();
+					return;
+				}				
+				Atm atm = new Atm();
+				atm.setBalance(0.00);
+				atm.setId(atmIdentifier.getText());
+				atm.setSslKeyMark(atmSSLFingerprint.getText());
+				atm.setStatus(true);
+				Server.getAtms().addAtm(atm);
+				close();
+				Server.updateData();
+			}
+		};
 	}
 
 }

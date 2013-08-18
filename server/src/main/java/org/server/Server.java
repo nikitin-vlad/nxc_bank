@@ -8,12 +8,20 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.server.panels.MainForm;
+import org.common.accounts.Accounts;
+import org.common.atms.Atms;
 import org.common.configs.Config;
 
  
 
 public class Server {
 
+	private static Accounts accounts = new Accounts();
+	private static Atms atms = new Atms();
+    
+	public static boolean isRunning = false;
+	private static MainForm window;
+	
 	public static void main(String[] args) throws Exception {
 		System.out.println("Server initialization goes here");
 		
@@ -39,12 +47,26 @@ public class Server {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainForm window = new MainForm();
+			        isRunning = true;
+					window = new MainForm();
 					window.frmBankServer.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});		
+	}
+	
+	public static Accounts getAccounts() {
+		return accounts;
+	}
+	
+	public static Atms getAtms() {
+		return atms;
+	}
+
+	public static void updateData() {
+		window.loadAccounts();
+		window.loadAtms();
 	}
 }

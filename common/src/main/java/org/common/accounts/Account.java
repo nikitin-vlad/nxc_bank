@@ -1,5 +1,10 @@
 package org.common.accounts;
 
+//import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Account {
 	
 	private String cardNumber;
@@ -11,6 +16,7 @@ public class Account {
 		return cardNumber;
 	}
 	
+	@XmlElement
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
@@ -19,6 +25,7 @@ public class Account {
 		return password;
 	}
 	
+	@XmlElement
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -27,6 +34,7 @@ public class Account {
 		return status;
 	}
 	
+	@XmlElement
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
@@ -35,6 +43,7 @@ public class Account {
 		return amount;
 	}
 	
+	@XmlElement
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}

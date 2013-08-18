@@ -20,6 +20,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
+import org.common.accounts.Account;
+import org.common.atms.Atm;
+import org.server.Server;
 import org.server.dialogs.AccountAdd;
 import org.server.dialogs.AtmAdd;
 
@@ -64,18 +67,7 @@ public class MainForm {
 		accountsPanel.add(accountsToolBar);
 		
 		accountsBtnAdd = new JButton("Add");
-		accountsBtnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				try {
-					AccountAdd dialog = new AccountAdd();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		accountsBtnAdd.addMouseListener(addAccount());
 		accountsToolBar.add(accountsBtnAdd);
 		
 		accountsBtnEdit = new JButton("Edit");
@@ -98,12 +90,8 @@ public class MainForm {
 		accountsListPanel.setBounds(10, 34, 190, 358);
 		accountsPanel.add(accountsListPanel);
 		accountsListPanel.setLayout(new BorderLayout(0, 0));
-		
-		accountsListModel.addElement("156165165161561");
-		accountsListModel.addElement("816516516515665");
-		accountsListModel.addElement("516516516515655");		
-		accountsListModel.addElement("615156165156165");		
-		accountsListModel.addElement("561561561561656");		
+
+		loadAccounts();		
 		
 		accountsList = new JList<String>(accountsListModel);
 		accountsList.addListSelectionListener(new ListSelectionListener() {
@@ -142,18 +130,7 @@ public class MainForm {
 		atmsPanel.add(atmsToolBar);
 		
 		atmsBtnAdd = new JButton("Add");
-		atmsBtnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				try {
-					AtmAdd dialog = new AtmAdd();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}				
-			}
-		});
+		atmsBtnAdd.addMouseListener(addAtm());
 		atmsToolBar.add(atmsBtnAdd);
 		
 		atmsBtnEdit = new JButton("Edit");
@@ -177,10 +154,7 @@ public class MainForm {
 		atmsPanel.add(atmsListPanel);
 		atmsListPanel.setLayout(new BorderLayout(0, 0));
 		
-		atmsListModel.addElement("ATM-1");
-		atmsListModel.addElement("ATM-2");
-		atmsListModel.addElement("ATM-3");		
-		atmsListModel.addElement("ATM-4");		
+		loadAtms();
 		
 		atmsList = new JList<String>(atmsListModel);
 		atmsList.setValueIsAdjusting(true);
@@ -196,4 +170,58 @@ public class MainForm {
 		atmsDetailsPanel.setBounds(210, 34, 389, 358);
 		atmsPanel.add(atmsDetailsPanel);
 	}
+
+	public void loadAtms() {
+		if (Server.getAtms().isBlocked()) return;
+		atmsListModel.clear();
+		for(int i = 0, l = Server.getAtms().count(); i <= l; i++) {
+			Atm atm = Server.getAtms().getAtm(i);
+			if (atm == null) continue;
+			atmsListModel.addElement(atm.getId());			
+		}
+	}
+
+	public void loadAccounts() {
+		if (Server.getAccounts().isBlocked()) return;
+		accountsListModel.clear();
+		for(int i = 0, l = Server.getAccounts().count(); i <= l; i++) {
+			Account account = Server.getAccounts().getAccount(i);
+			if (account == null) continue;
+			accountsListModel.addElement(account.getCardNumber());			
+		}
+	}
+
+	private MouseAdapter addAtm() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				try {
+					if (Server.getAtms().isBlocked()) return;
+					Server.getAtms().setBlocked(true);
+					AtmAdd dialog = new AtmAdd();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+		};
+	}
+	
+	private MouseAdapter addAccount() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				try {
+					if (Server.getAccounts().isBlocked()) return;
+					Server.getAccounts().setBlocked(true);
+					AccountAdd dialog = new AccountAdd();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}	
 }

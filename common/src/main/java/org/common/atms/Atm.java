@@ -5,7 +5,7 @@ public class Atm {
 	private String id;
 	private String sslKeyMark;
 	private Double balance;
-	private double status;
+	private boolean status;
 	
 	//private HashMap<int, int> bills = new HashMap<int, int>();
 	
@@ -33,11 +33,11 @@ public class Atm {
 		this.balance = balance;
 	
 	}
-	public double getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 	
-	public void setStatus(double status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 	

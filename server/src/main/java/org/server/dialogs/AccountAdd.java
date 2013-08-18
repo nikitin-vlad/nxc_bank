@@ -11,6 +11,10 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+
+import org.common.accounts.Account;
+import org.server.Server;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -72,11 +76,7 @@ public class AccountAdd extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("bla");
-					}
-				});
+				okButton.addActionListener(submit());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -85,7 +85,7 @@ public class AccountAdd extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dispose();
+						close();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
@@ -93,4 +93,32 @@ public class AccountAdd extends JDialog {
 			}
 		}
 	}
+
+	private ActionListener submit() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (accountNumber.getText().equals("")) {
+					close();
+					return;
+				}
+				if (accountPassword.getText().equals("")) {
+					close();
+					return;
+				}				
+				Account account = new Account();
+				account.setAmount(0.00);
+				account.setCardNumber(accountNumber.getText());
+				account.setPassword(accountPassword.getText());
+				account.setStatus(true);
+				Server.getAccounts().addAccount(account);
+				close();
+				Server.updateData();
+			}
+		};
+	}
+	
+	private void close() {
+		dispose();
+		Server.getAccounts().setBlocked(false);
+	}	
 }
