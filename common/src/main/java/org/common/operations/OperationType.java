@@ -1,7 +1,7 @@
-package org.server.operation;
+package org.common.operations;
 
 public enum OperationType {
 	ReloadAmount,
 	GetCash,
-	Balance
+	Balance;
 }

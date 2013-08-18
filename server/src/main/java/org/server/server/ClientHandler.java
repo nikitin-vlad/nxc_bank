@@ -1,15 +1,17 @@
 package org.server.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.cert.Certificate;
 import java.util.Arrays;
 
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
+
+import org.common.operations.OperationResponse;
+import org.common.operations.OperationResponseStatus;
+import org.common.operations.OperationRequest;
 
 public class ClientHandler extends Thread {
     
@@ -30,26 +32,21 @@ public class ClientHandler extends Thread {
     }
     
     public void run() {
-        BufferedReader in = null;
-        PrintWriter out = null;
+        ObjectInputStream in = null;
+        ObjectOutputStream out = null;
         try {
             int atmId = this.getClientId();
-        	in = new BufferedReader(new InputStreamReader(
-                    clientSocket.getInputStream()));
-        	out = new PrintWriter(new OutputStreamWriter(
-                    clientSocket.getOutputStream()));
-
+        	in = new ObjectInputStream(clientSocket.getInputStream());
+        	out = new ObjectOutputStream(clientSocket.getOutputStream());
+        	OperationRequest request = null;
+        	OperationResponse response = null;
             while (run) {
-                String clientCommand = in.readLine();
-                System.out.println("Client Says :" + clientCommand);
-
-                if (clientCommand.equalsIgnoreCase("quit")) {
-                    run = false;
-                } else {
-                    // echo back
-                    out.println(clientCommand);
-                    out.flush();
-                }
+                request = (OperationRequest)in.readObject();
+                System.out.println("Client Says :" + request);
+                
+                response = new OperationResponse(OperationResponseStatus.OK, "");
+                out.writeObject(response);
+                out.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package org.server.operation;
+package org.common.operations;
 
 public enum OperationResponseStatus {
 	OK,

@@ -1,16 +1,25 @@
-package org.server.operation;
+package org.common.operations;
 
-public class OperatoinRequest {
+public class OperationRequest {
 	private String cardNumber;
 	private int pass;
 	private OperationType operation;
-
-	public OperatoinRequest() {	}
+	private String data;
 	
-	public OperatoinRequest(String cardNumber, int pass, OperationType operation) {
+	public OperationRequest() {	}
+	
+	public OperationRequest(String cardNumber, int pass, OperationType operation) {
 		this.cardNumber = cardNumber;
 		this.pass = pass;
 		this.operation = operation;
+	}
+	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 	public String getCardNumber() {

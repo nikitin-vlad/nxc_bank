@@ -31,14 +31,14 @@ public class SecureSocketServer {
             sc.init(keyManagerFactory.getKeyManagers(), null, null);
             SSLServerSocketFactory sslServerSocketFactory = sc
                     .getServerSocketFactory();
-            SSLServerSocket s = (SSLServerSocket) sslServerSocketFactory
+            SSLServerSocket serverSocket = (SSLServerSocket) sslServerSocketFactory
                     .createServerSocket(sslConf.getPort());
-            s.setNeedClientAuth(true);
+            serverSocket.setNeedClientAuth(true);
             
             while (true) {
                 try {
                     // Accept incoming connections.
-                    SSLSocket sslSocket = (SSLSocket) s.accept();
+                    SSLSocket sslSocket = (SSLSocket) serverSocket.accept();
 
                     ClientHandler cliThread = clientFactory.create(sslSocket);
                     cliThread.start();
