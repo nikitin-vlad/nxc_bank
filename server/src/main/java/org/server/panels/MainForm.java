@@ -1,7 +1,9 @@
 package org.server.panels;
 
 import java.awt.BorderLayout;
+
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTabbedPane;
@@ -17,6 +19,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+
+import org.server.dialogs.AccountsAdd;
 
 public class MainForm {
 
@@ -61,7 +65,14 @@ public class MainForm {
 		accountsBtnAdd = new JButton("Add");
 		accountsBtnAdd.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent event) {
+				try {
+					AccountsAdd dialog = new AccountsAdd();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		accountsToolBar.add(accountsBtnAdd);
