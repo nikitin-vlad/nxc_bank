@@ -3,9 +3,11 @@ package org.atm;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -73,7 +75,6 @@ public class SecureSocketClient {
 	        }
 	        socketReader = new ObjectInputStream(socket.getInputStream());
         	socketWriter = new ObjectOutputStream(socket.getOutputStream());
-	
 	        while (run) {
 	        	OperationRequest request = this.getRequestObject(in);
 	        	socketWriter.writeObject(request);
@@ -119,19 +120,21 @@ public class SecureSocketClient {
 	    	}
 	    	id = Integer.parseInt(reader.readLine());
 	    	if (id < values.length) {
-		    	operationType = values[Integer.parseInt(reader.readLine())];
+		    	operationType = values[id];
+		    	System.out.println("test");
 		    	break;
 	    	} else {
 	    		System.out.println("Wrong operatoin id, try again");
 	    	}
     	}
-    	
+    	System.out.println("test");
     	if (operationType == OperationType.GetCash ||
     			operationType == OperationType.ReloadAmount) {
     		System.out.println("Enter ammount");
     		String ammount = reader.readLine();
     		request.setData(ammount);
     	}
+    	System.out.println("sending data");
     	request.setOperation(operationType);
     	
 		return request;

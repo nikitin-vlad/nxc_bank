@@ -1,6 +1,12 @@
 package org.common.operations;
 
-public class OperationRequest {
+import java.io.Serializable;
+
+public class OperationRequest implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5861347600297117097L;
 	private String cardNumber;
 	private int pass;
 	private OperationType operation;

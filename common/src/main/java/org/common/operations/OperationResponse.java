@@ -1,6 +1,12 @@
 package org.common.operations;
 
-public class OperationResponse {
+import java.io.Serializable;
+
+public class OperationResponse implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4495548719843239608L;
 	private OperationResponseStatus status;
 	private String message;
 	
