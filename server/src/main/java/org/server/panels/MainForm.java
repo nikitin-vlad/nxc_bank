@@ -179,7 +179,7 @@ public class MainForm {
 			public void mouseClicked(MouseEvent event) {
 				try {
 					if (Server.getAccounts().isBlocked()) return;
-					if (atmsList.getSelectedIndex() != -1) {
+					if (accountsList.getSelectedIndex() != -1) {
 						Server.getAccounts().setBlocked(true);
 						Account account = Server.getAccounts().getAccount(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString());
 						AccountAdd dialog = new AccountAdd(true, account);
@@ -229,7 +229,18 @@ public class MainForm {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent event) {
-				
+				try {
+					if (Server.getAtms().isBlocked()) return;
+					if (atmsList.getSelectedIndex() != -1) {
+						Server.getAtms().setBlocked(true);
+						Atm atm = Server.getAtms().getAtm(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString());
+						AtmAdd dialog = new AtmAdd(true, atm);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
 			}
 		};
 	}

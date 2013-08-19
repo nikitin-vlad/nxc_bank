@@ -23,9 +23,21 @@ public class AtmAdd extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField atmIdentifier;
 	private JCheckBox atmStatus;
+	private boolean editMode;
+	private Atm atm;
 
 	public AtmAdd() {
-		setTitle("Add new ATM");
+		init();
+	}
+
+	public AtmAdd(boolean mode, Atm atm) {
+		editMode = mode;
+		this.atm = atm;
+		init();
+	}	
+	
+	private void init() {
+		setTitle((!editMode) ? "Add new ATM" : "Edit ATM");
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 213, 164);
 		getContentPane().setLayout(new BorderLayout());
@@ -40,6 +52,10 @@ public class AtmAdd extends JDialog {
 		{
 			atmIdentifier = new JTextField();
 			atmIdentifier.setBounds(10, 36, 177, 20);
+			if (editMode) {
+				atmIdentifier.setText(atm.getId());
+				atmIdentifier.setEnabled(false);
+			}
 			contentPanel.add(atmIdentifier);
 			atmIdentifier.setColumns(10);
 		}
@@ -47,6 +63,9 @@ public class AtmAdd extends JDialog {
 			atmStatus = new JCheckBox("Enabled");
 			atmStatus.setSelected(true);
 			atmStatus.setBounds(10, 63, 97, 23);
+			if (editMode) {
+				atmStatus.setSelected(atm.getStatus());
+			}
 			contentPanel.add(atmStatus);
 		}
 		{
@@ -54,7 +73,7 @@ public class AtmAdd extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton((!editMode) ? "OK" : "Save");
 				okButton.addActionListener(submit());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
@@ -84,16 +103,27 @@ public class AtmAdd extends JDialog {
 				if (atmIdentifier.getText().equals("")) {
 					close();
 					return;
-				}			
-				Atm atm = new Atm();
-				atm.setBalance(0.00);
-				atm.setId(atmIdentifier.getText());
-				atm.setStatus(true);
-				Server.getAtms().addAtm(atm);
+				}
+				if (editMode) {
+					atm.setStatus(atmStatus.isSelected());
+				} else {
+					Atm atm = new Atm();
+					atm.setBalance(0.00);
+					atm.setId(atmIdentifier.getText());
+					atm.setStatus(atmStatus.isSelected());
+					Server.getAtms().addAtm(atm);
+				}
 				close();
 				Server.updateData();
 			}
 		};
 	}
 
+	public void setEditMode(boolean mode) {
+		editMode = mode;
+	}
+	
+	public boolean getEditMode() {
+		return editMode;
+	}	
 }

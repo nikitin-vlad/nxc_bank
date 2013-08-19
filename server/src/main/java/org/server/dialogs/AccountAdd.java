@@ -54,6 +54,7 @@ public class AccountAdd extends JDialog {
 			accountNumber.setBounds(10, 31, 194, 20);
 			if (editMode) {
 				accountNumber.setText(account.getCardNumber());
+				accountNumber.setEnabled(false);
 			}
 			contentPanel.add(accountNumber);
 			accountNumber.setColumns(10);
@@ -99,7 +100,7 @@ public class AccountAdd extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton((!editMode) ? "OK" : "Save");
 				okButton.addActionListener(submit());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
@@ -131,7 +132,6 @@ public class AccountAdd extends JDialog {
 				}				
 				if (editMode) {
 					account.setAmount(Double.parseDouble(accountAmount.getText()));
-					account.setCardNumber(accountNumber.getText());
 					account.setPassword(accountPassword.getText());
 					account.setStatus(accountStatus.isSelected());
 				} else {
