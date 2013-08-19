@@ -176,7 +176,19 @@ public class MainForm {
 	private MouseAdapter editAccount() {
 		return new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent event) {
+				try {
+					if (Server.getAccounts().isBlocked()) return;
+					if (atmsList.getSelectedIndex() != -1) {
+						Server.getAccounts().setBlocked(true);
+						Account account = Server.getAccounts().getAccount(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString());
+						AccountAdd dialog = new AccountAdd(true, account);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
 			}
 		};
 	}
@@ -216,7 +228,8 @@ public class MainForm {
 	private MouseAdapter editAtm() {
 		return new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent event) {
+				
 			}
 		};
 	}
