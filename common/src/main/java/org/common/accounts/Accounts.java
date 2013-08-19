@@ -1,11 +1,8 @@
 package org.common.accounts;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static ch.lambdaj.Lambda.*;
-
 import org.hamcrest.Matchers;
 
 //import javax.xml.bind.JAXBContext;
@@ -56,9 +53,9 @@ public class Accounts {
 	}
 	
 	public Account getAccount(String cardNumber) {
-		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
-		Account account = acountList.get(0);
-		return account;
+		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		Object[] values = accounts.toArray();
+		return (values.length > 0) ? (Account) values[0] : null;
 	}
 	
 	public void addAccount(Account account) {
