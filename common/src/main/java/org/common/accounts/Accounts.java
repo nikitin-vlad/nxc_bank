@@ -1,8 +1,11 @@
 package org.common.accounts;
 
-import java.awt.List;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import static ch.lambdaj.Lambda.*;
+
 import org.hamcrest.Matchers;
 
 //import javax.xml.bind.JAXBContext;
@@ -54,8 +57,9 @@ public class Accounts {
 	}
 	
 	public Account getAccount(String cardNumber) {
-		List<Account> oldFriends = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
-		return null;
+		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		Account account = acountList.get(0);
+		return account;
 	}
 	
 	public void addAccount(Account account) {
@@ -82,11 +86,17 @@ public class Accounts {
 		return null;
 	}
 
-	public void removeAccount(String accountNumber) {
-		
+	public void removeAccount(String cardNumber) {
+		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		Account account = acountList.get(0);
+		data.remove(account);
 	}
 
-	public boolean isExisting(String accountNumber) {
-		return false;
+	public boolean isExisting(String cardNumber) {
+		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		if (acountList.isEmpty()){
+			return false;
+		}
+		return true;
 	}
 }
