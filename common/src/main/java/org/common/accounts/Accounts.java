@@ -81,4 +81,8 @@ public class Accounts {
 	public void removeAccount(String accountNumber) {
 		
 	}
+
+	public boolean isExisting(String accountNumber) {
+		return false;
+	}
 }

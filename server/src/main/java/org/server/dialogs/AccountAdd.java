@@ -135,6 +135,10 @@ public class AccountAdd extends JDialog {
 					account.setPassword(accountPassword.getText());
 					account.setStatus(accountStatus.isSelected());
 				} else {
+					if (Server.getAccounts().isExisting(accountNumber.getText())) {
+						
+						return;
+					}					
 					Account account = new Account();
 					account.setAmount(Double.parseDouble(accountAmount.getText()));
 					account.setCardNumber(accountNumber.getText());
