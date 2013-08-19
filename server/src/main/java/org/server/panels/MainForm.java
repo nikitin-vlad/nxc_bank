@@ -25,6 +25,7 @@ import org.common.atms.Atm;
 import org.server.Server;
 import org.server.dialogs.AccountAdd;
 import org.server.dialogs.AtmAdd;
+import org.server.dialogs.AtmBalance;
 
 public class MainForm {
 
@@ -124,6 +125,10 @@ public class MainForm {
 		atmsBtnRemove.addMouseListener(removeAtm());
 		atmsToolBar.add(atmsBtnRemove);
 		
+		JButton atmsBtnBalance = new JButton("Balance");
+		atmsBtnBalance.addMouseListener(balanceAtm());
+		atmsToolBar.add(atmsBtnBalance);
+		
 		JPanel atmsListPanel = new JPanel();
 		atmsListPanel.setBounds(10, 34, 190, 358);
 		atmsPanel.add(atmsListPanel);
@@ -145,6 +150,25 @@ public class MainForm {
 		JPanel atmsDetailsPanel = new JPanel();
 		atmsDetailsPanel.setBounds(210, 34, 389, 358);
 		atmsPanel.add(atmsDetailsPanel);
+	}
+
+	private MouseAdapter balanceAtm() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					if (atmsList.getSelectedIndex() != -1) {
+						Server.getAccounts().setBlocked(true);
+						Atm atm = Server.getAtms().getAtm(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString());
+						AtmBalance dialog = new AtmBalance(atm);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+		};
 	}
 
 	private ListSelectionListener accountsListSelectionChanged() {

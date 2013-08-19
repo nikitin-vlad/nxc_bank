@@ -1,8 +1,10 @@
 package org.common.accounts;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
 import static ch.lambdaj.Lambda.*;
+
 import org.hamcrest.Matchers;
 
 

@@ -41,6 +41,13 @@ public class Atm {
 	public void setBills(HashMap<Integer, Integer> bills) {
 		this.bills = bills;
 	}
+
+	public Object[][] getBillsData() {
+		Object[][] data = {
+			{0, 0}
+		};
+		return data;
+	}
 	
 	
 }

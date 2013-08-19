@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -107,6 +108,13 @@ public class AtmAdd extends JDialog {
 				if (editMode) {
 					atm.setStatus(atmStatus.isSelected());
 				} else {
+					if (Server.getAtms().isExisting(atmIdentifier.getText())) {
+						JOptionPane.showMessageDialog(null,
+							    "ATM with such identifier already existed. Change please identifier and try again.",
+							    "Duplicate error",
+							    JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					Atm atm = new Atm();
 					atm.setBalance(0.00);
 					atm.setId(atmIdentifier.getText());
