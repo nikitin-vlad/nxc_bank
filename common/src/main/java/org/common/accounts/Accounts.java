@@ -58,7 +58,7 @@ public class Accounts {
 	public Account getAccount(String cardNumber) {
 		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		Object[] values = accounts.toArray();
-		return (Account) values[0];
+		return (values.length > 0) ? (Account) values[0] : null;
 	}
 	
 	public void addAccount(Account account) {
