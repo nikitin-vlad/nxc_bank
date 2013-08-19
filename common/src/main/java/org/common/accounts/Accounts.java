@@ -38,8 +38,7 @@ public class Accounts {
 //			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 //	 
 //			jaxbMarshaller.marshal((Object)data, Accounts.class.getResourceAsStream(Config.accountsFile));
-//			
-//			
+
 //			JAXBContext jaxbContextRead = JAXBContext.newInstance(HashMap.class);
 //			Unmarshaller jaxbUnmarshaller = jaxbContextRead.createUnmarshaller();
 //			Object loadedData = jaxbUnmarshaller.unmarshal(Accounts.class.getResourceAsStream(Config.accountsFile));
