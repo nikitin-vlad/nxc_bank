@@ -50,5 +50,9 @@ public class Atms {
 
 	public void removeAtm(String id) {
 		
+	}
+
+	public boolean isExisting(String id) {
+		return false;
 	}	
 }

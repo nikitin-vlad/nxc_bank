@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -136,7 +137,10 @@ public class AccountAdd extends JDialog {
 					account.setStatus(accountStatus.isSelected());
 				} else {
 					if (Server.getAccounts().isExisting(accountNumber.getText())) {
-						
+						JOptionPane.showMessageDialog(null,
+							    "Account with such card numer already existed. Change please account number and try again.",
+							    "Duplicate error",
+							    JOptionPane.ERROR_MESSAGE);
 						return;
 					}					
 					Account account = new Account();
