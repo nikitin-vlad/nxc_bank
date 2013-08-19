@@ -71,19 +71,11 @@ public class MainForm {
 		accountsToolBar.add(accountsBtnAdd);
 		
 		accountsBtnEdit = new JButton("Edit");
-		accountsBtnEdit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		accountsBtnEdit.addMouseListener(editAccount());
 		accountsToolBar.add(accountsBtnEdit);
 		
 		accountsBtnRemove = new JButton("Remove");
-		accountsBtnRemove.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		accountsBtnRemove.addMouseListener(removeAccount());
 		accountsToolBar.add(accountsBtnRemove);
 		
 		JPanel accountsListPanel = new JPanel();
@@ -94,16 +86,7 @@ public class MainForm {
 		loadAccounts();		
 		
 		accountsList = new JList<String>(accountsListModel);
-		accountsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-		        if (e.getValueIsAdjusting() == false) {
-		        	 
-		            if (accountsList.getSelectedIndex() != -1) {
-		            	System.out.println(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString() );
-		            }
-		        }
-			}
-		});
+		accountsList.addListSelectionListener(accountsListSelectionChanged());
 		accountsList.setValueIsAdjusting(true);
 		accountsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		accountsList.setSelectedIndex(0);
@@ -134,19 +117,11 @@ public class MainForm {
 		atmsToolBar.add(atmsBtnAdd);
 		
 		atmsBtnEdit = new JButton("Edit");
-		atmsBtnEdit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		atmsBtnEdit.addMouseListener(editAtm());
 		atmsToolBar.add(atmsBtnEdit);
 		
 		atmsBtnRemove = new JButton("Remove");
-		atmsBtnRemove.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		atmsBtnRemove.addMouseListener(removeAtm());
 		atmsToolBar.add(atmsBtnRemove);
 		
 		JPanel atmsListPanel = new JPanel();
@@ -157,6 +132,7 @@ public class MainForm {
 		loadAtms();
 		
 		atmsList = new JList<String>(atmsListModel);
+		accountsList.addListSelectionListener(atmsListSelectionChanged());
 		atmsList.setValueIsAdjusting(true);
 		atmsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		atmsList.setSelectedIndex(0);
@@ -169,6 +145,104 @@ public class MainForm {
 		JPanel atmsDetailsPanel = new JPanel();
 		atmsDetailsPanel.setBounds(210, 34, 389, 358);
 		atmsPanel.add(atmsDetailsPanel);
+	}
+
+	private ListSelectionListener accountsListSelectionChanged() {
+		return new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+		        if (e.getValueIsAdjusting() == false) {
+		        	 
+		            if (accountsList.getSelectedIndex() != -1) {
+		            	System.out.println(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString() );
+		            }
+		        }
+			}
+		};
+	}
+	
+	private ListSelectionListener atmsListSelectionChanged() {
+		return new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting() == false) {
+					
+					if (atmsList.getSelectedIndex() != -1) {
+						System.out.println(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString() );
+					}
+				}
+			}
+		};
+	}
+
+	private MouseAdapter editAccount() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				try {
+					if (Server.getAccounts().isBlocked()) return;
+					if (accountsList.getSelectedIndex() != -1) {
+						Server.getAccounts().setBlocked(true);
+						Account account = Server.getAccounts().getAccount(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString());
+						AccountAdd dialog = new AccountAdd(true, account);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+		};
+	}
+
+	private MouseAdapter removeAccount() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (accountsList.getSelectedIndex() != -1) {
+					if (Server.getAccounts().isBlocked()) return;
+					Server.getAccounts().setBlocked(true);
+					
+					Server.getAccounts().removeAccount(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString());
+					
+					Server.getAccounts().setBlocked(false);
+				}
+			}
+		};
+	}
+
+	private MouseAdapter removeAtm() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (atmsList.getSelectedIndex() != -1) {
+					if (Server.getAtms().isBlocked()) return;
+					Server.getAtms().setBlocked(true);
+					
+					Server.getAtms().removeAtm(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString());
+					
+					Server.getAtms().setBlocked(false);
+				}				
+			}
+		};
+	}
+
+	private MouseAdapter editAtm() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				try {
+					if (Server.getAtms().isBlocked()) return;
+					if (atmsList.getSelectedIndex() != -1) {
+						Server.getAtms().setBlocked(true);
+						Atm atm = Server.getAtms().getAtm(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString());
+						AtmAdd dialog = new AtmAdd(true, atm);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+		};
 	}
 
 	public void loadAtms() {

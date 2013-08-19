@@ -11,7 +11,6 @@ public class Atms {
 			Atm atm = new Atm();
 			atm.setBalance(100.00);
 			atm.setId("ATM-"+(i+1));
-			atm.setSslKeyMark("SSLKEYFINGERPRINT"+i);
 			atm.setStatus(true);
 			data.add(atm);
 		}		
@@ -47,5 +46,9 @@ public class Atms {
 			return (Atm) values[index-1];
 		}
 		return null;
+	}
+
+	public void removeAtm(String id) {
+		
 	}	
 }
