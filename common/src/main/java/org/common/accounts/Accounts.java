@@ -77,4 +77,8 @@ public class Accounts {
 		}
 		return null;
 	}
+
+	public void removeAccount(String accountNumber) {
+		
+	}
 }
