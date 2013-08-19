@@ -1,6 +1,9 @@
 package org.common.accounts;
 
+import java.awt.List;
 import java.util.ArrayList;
+import static ch.lambdaj.Lambda.*;
+import org.hamcrest.Matchers;
 
 //import javax.xml.bind.JAXBContext;
 //import javax.xml.bind.JAXBException;
@@ -51,6 +54,7 @@ public class Accounts {
 	}
 	
 	public Account getAccount(String cardNumber) {
+		List<Account> oldFriends = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		return null;
 	}
 	
