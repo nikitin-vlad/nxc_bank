@@ -18,6 +18,8 @@ import org.server.Server;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AccountAdd extends JDialog {
 
@@ -30,6 +32,13 @@ public class AccountAdd extends JDialog {
 	private Account account;
 
 	public AccountAdd() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Server.getAccounts().setBlocked(false);
+			}
+		});
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		init();
 	}
 
@@ -158,7 +167,6 @@ public class AccountAdd extends JDialog {
 	
 	private void close() {
 		dispose();
-		Server.getAccounts().setBlocked(false);
 	}
 
 	public void setEditMode(boolean mode) {

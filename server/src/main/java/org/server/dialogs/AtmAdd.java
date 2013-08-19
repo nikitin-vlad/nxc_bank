@@ -17,6 +17,8 @@ import org.server.Server;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AtmAdd extends JDialog {
 
@@ -28,6 +30,14 @@ public class AtmAdd extends JDialog {
 	private Atm atm;
 
 	public AtmAdd() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				Server.getAtms().setBlocked(false);
+			}
+		});
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		init();
 	}
 
@@ -95,7 +105,6 @@ public class AtmAdd extends JDialog {
 
 	private void close() {
 		dispose();
-		Server.getAtms().setBlocked(false);
 	}
 	
 	private ActionListener submit() {

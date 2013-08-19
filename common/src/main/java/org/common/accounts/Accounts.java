@@ -87,8 +87,10 @@ public class Accounts {
 
 	public void removeAccount(String cardNumber) {
 		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
-		Account account = acountList.get(0);
-		data.remove(account);
+		if (!acountList.isEmpty()) {
+			Account account = acountList.get(0);
+			data.remove(account);
+		}
 	}
 
 	public boolean isExisting(String cardNumber) {

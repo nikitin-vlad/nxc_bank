@@ -1,6 +1,11 @@
 package org.common.atms;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static ch.lambdaj.Lambda.*;
+
+import org.hamcrest.Matchers;
 
 public class Atms {
 	private ArrayList<Atm> data = new ArrayList<Atm>();
@@ -49,10 +54,18 @@ public class Atms {
 	}
 
 	public void removeAtm(String id) {
-		
+		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		if (!atmList.isEmpty()) {
+			Atm atm = atmList.get(0);
+			data.remove(atm);
+		}
 	}
 
 	public boolean isExisting(String id) {
-		return false;
+		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		if (atmList.isEmpty()){
+			return false;
+		}
+		return true;
 	}	
 }
