@@ -3,11 +3,17 @@ package org.common.atms;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hamcrest.Matchers;
 
+import static ch.lambdaj.Lambda.*;
+
+
+@XmlRootElement
 public class Atms {
+	@XmlElement(name = "AtmList")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
 	
@@ -26,7 +32,10 @@ public class Atms {
 	}	
 	
 	public Atm getAtm(String id) {
-		return null;
+		List<Atm> accounts = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		Object[] values = accounts.toArray();
+		return (values.length > 0) ? (Atm) values[0] : null;
+		
 	}
 	
 	public void addAtm(Atm atm) {

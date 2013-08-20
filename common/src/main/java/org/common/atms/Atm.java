@@ -2,6 +2,8 @@ package org.common.atms;
 
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Atm {
 
 	private String id;
@@ -13,7 +15,7 @@ public class Atm {
 	public String getId() {
 		return id;
 	}
-	
+	@XmlElement
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -21,7 +23,7 @@ public class Atm {
 	public Double getBalance() {
 		return balance;
 	}
-	
+	@XmlElement
 	public void setBalance(Double balance) {
 		this.balance = balance;
 	
@@ -29,7 +31,7 @@ public class Atm {
 	public boolean getStatus() {
 		return status;
 	}
-	
+	@XmlElement
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
@@ -37,7 +39,7 @@ public class Atm {
 	public HashMap<Integer, Integer> getBills() {
 		return bills;
 	}
-
+	@XmlElement
 	public void setBills(HashMap<Integer, Integer> bills) {
 		this.bills = bills;
 	}
