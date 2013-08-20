@@ -32,9 +32,9 @@
 	</dependencies>
 	
 	<modules>
+		<module>common</module>
 		<module>atm</module>
 		<module>server</module>
-		<module>common</module>
 	</modules>
 	
 	<build>

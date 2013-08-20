@@ -1,5 +1,7 @@
 package org.common.atms;
 
+import java.util.HashMap;
+
 public class Atm {
 
 	private String id;
@@ -7,7 +9,7 @@ public class Atm {
 	private Double balance;
 	private boolean status;
 	
-	//private HashMap<int, int> bills = new HashMap<int, int>();
+	private HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
 	
 	public String getId() {
 		return id;
@@ -40,6 +42,5 @@ public class Atm {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	
 	
 }
