@@ -33,6 +33,7 @@ public class AtmBalance extends JDialog {
 	private JTextField atmBillName;
 	private JTextField atmBillAmount;
 	private JTable atmBillsTable;
+	private JLabel atmBalanceAmountLabel;
 	private Atm atm;
 
 	public AtmBalance(Atm atm) {
@@ -45,8 +46,6 @@ public class AtmBalance extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModal(true);
 		this.atm = atm;
-		
-		setAlwaysOnTop(true);
 		setTitle("ATM Balance");
 		setBounds(100, 100, 390, 374);
 		getContentPane().setLayout(new BorderLayout());
@@ -58,7 +57,7 @@ public class AtmBalance extends JDialog {
 		lblBalanceAmount.setBounds(10, 11, 102, 14);
 		contentPanel.add(lblBalanceAmount);
 		
-		JLabel atmBalanceAmountLabel = new JLabel("0.00");
+		atmBalanceAmountLabel = new JLabel(Double.toString(this.atm.getBalance()));
 		atmBalanceAmountLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		atmBalanceAmountLabel.setBounds(122, 11, 128, 14);
 		contentPanel.add(atmBalanceAmountLabel);
@@ -95,9 +94,7 @@ public class AtmBalance extends JDialog {
 		Object[][] atmBillsTableData = this.atm.getBillsData();
 		atmBillsTable = new JTable(atmBillsTableData, atmBillsColumnNames);
 		atmBillsTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{new Integer(0), new Integer(0)},
-			},
+			atmBillsTableData,
 			new String[] {
 				"Bill name", "Bill amount"
 			}
@@ -133,14 +130,45 @@ public class AtmBalance extends JDialog {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				refreshData();
 			}
 		};
 	}
 
+	private void refreshData() {
+//		DefaultTableModel data = (DefaultTableModel) atmBillsTable.getModel();
+//		data.setRowCount(0);
+		atmBillsTable.setModel(new DefaultTableModel(
+			atm.getBillsData(),
+			new String[] {
+				"Bill name", "Bill amount"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		atmBalanceAmountLabel.setText(Double.toString(atm.getBalance()));
+	}
+	
 	private MouseAdapter atmSaveBill() {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (atmBillName.getText().isEmpty() || atmBillName.getText().equals("0")) {
+					return;
+				}
+				if (atmBillAmount.getText().isEmpty() || atmBillAmount.getText().equals("0")) {
+					return;
+				}
+				atm.addBill(Integer.parseInt(atmBillName.getText()), Integer.parseInt(atmBillAmount.getText()));
+				atmBillName.setText("");
+				atmBillAmount.setText("");				
+				refreshData();
 			}
 		};
 	}

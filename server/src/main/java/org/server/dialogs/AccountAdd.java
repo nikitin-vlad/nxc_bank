@@ -48,8 +48,7 @@ public class AccountAdd extends JDialog {
             }
 		});
 		setModal(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
-		setAlwaysOnTop(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle((!editMode) ? "Add new Account" : "Edit Account");
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);

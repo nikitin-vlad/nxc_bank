@@ -20,7 +20,6 @@ public class Atms {
 	public Atms() {
 		for (int i = 0, l = 5; i < l; i++) {
 			Atm atm = new Atm();
-			atm.setBalance(100.00);
 			atm.setId("ATM-"+(i+1));
 			atm.setStatus(true);
 			data.add(atm);
@@ -35,7 +34,6 @@ public class Atms {
 		List<Atm> accounts = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
 		Object[] values = accounts.toArray();
 		return (values.length > 0) ? (Atm) values[0] : null;
-		
 	}
 	
 	public void addAtm(Atm atm) {

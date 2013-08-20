@@ -48,7 +48,6 @@ public class AtmAdd extends JDialog {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
 		setTitle((!editMode) ? "Add new ATM" : "Edit ATM");
-		setAlwaysOnTop(true);
 		setBounds(100, 100, 213, 164);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -124,7 +123,6 @@ public class AtmAdd extends JDialog {
 						return;
 					}
 					Atm atm = new Atm();
-					atm.setBalance(0.00);
 					atm.setId(atmIdentifier.getText());
 					atm.setStatus(atmStatus.isSelected());
 					Server.getAtms().addAtm(atm);

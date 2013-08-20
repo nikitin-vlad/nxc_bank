@@ -3,6 +3,7 @@ package org.common.atms;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.common.conversion.MapAdapter;
 
@@ -14,7 +15,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Atm {
 
 	private String id;
-	private Double balance;
 	private boolean status;
 	
 	private HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
@@ -28,13 +28,15 @@ public class Atm {
 	}
 	
 	public Double getBalance() {
+		Double balance = 0.0;
+		for(Entry<Integer, Integer> billEntry : bills.entrySet()) {
+		    int bill = billEntry.getKey();
+		    int amount = billEntry.getValue();
+		    balance += bill * amount;
+		}
 		return balance;
 	}
-	@XmlElement
-	public void setBalance(Double balance) {
-		this.balance = balance;
-	
-	}
+
 	public boolean getStatus() {
 		return status;
 	}
@@ -69,6 +71,10 @@ public class Atm {
 		}
 
 		return result;
+	}
+	
+	public void addBill(int billName, int billAmount) {
+		bills.put(billName, billAmount);
 	}
 	
 }
