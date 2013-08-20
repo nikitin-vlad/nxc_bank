@@ -1,8 +1,11 @@
 package org.common.atms;
 
+import org.common.conversion.MapAdapter;
+
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 public class Atm {
 
@@ -39,7 +42,8 @@ public class Atm {
 	public HashMap<Integer, Integer> getBills() {
 		return bills;
 	}
-	@XmlElement
+    @XmlJavaTypeAdapter(MapAdapter.class)
+	@XmlElement(name="bills")
 	public void setBills(HashMap<Integer, Integer> bills) {
 		this.bills = bills;
 	}
