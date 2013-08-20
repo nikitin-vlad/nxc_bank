@@ -66,7 +66,7 @@ public class Server {
 	}
 
 	public static void updateData() {
-		window.loadAccounts();
-		window.loadAtms();
+		window.loadAccounts(true);
+		window.loadAtms(true);
 	}
 }

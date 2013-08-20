@@ -1,6 +1,8 @@
 package org.common.atms;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.common.conversion.MapAdapter;
 
@@ -52,10 +54,21 @@ public class Atm {
 	}
 
 	public Object[][] getBillsData() {
-		Object[][] data = {
-			{0, 0}
-		};
-		return data;
+		
+		final Object[][] result = new Object[bills.size()][2];
+		final Iterator<?> iter = bills.entrySet().iterator();
+
+		int i = 0;
+		while(iter.hasNext()){
+		    final Map.Entry<?, ?> mapping = (Map.Entry<?, ?>) iter.next();
+
+		    result[i][0] = mapping.getKey();
+		    result[i][1] = mapping.getValue();
+
+		    i++;
+		}
+
+		return result;
 	}
 	
 }

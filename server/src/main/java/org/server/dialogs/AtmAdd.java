@@ -30,14 +30,6 @@ public class AtmAdd extends JDialog {
 	private Atm atm;
 
 	public AtmAdd() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				Server.getAtms().setBlocked(false);
-			}
-		});
-		setModal(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		init();
 	}
 
@@ -48,6 +40,13 @@ public class AtmAdd extends JDialog {
 	}	
 	
 	private void init() {
+		addWindowListener(new WindowAdapter() {
+            public void windowDeactivated(WindowEvent e) {
+                Server.getAtms().setBlocked(false);
+            }
+		});
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
 		setTitle((!editMode) ? "Add new ATM" : "Edit ATM");
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 213, 164);
@@ -104,7 +103,7 @@ public class AtmAdd extends JDialog {
 	}
 
 	private void close() {
-		dispose();
+		AtmAdd.this.dispose();
 	}
 	
 	private ActionListener submit() {

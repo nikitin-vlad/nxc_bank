@@ -32,13 +32,6 @@ public class AccountAdd extends JDialog {
 	private Account account;
 
 	public AccountAdd() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				Server.getAccounts().setBlocked(false);
-			}
-		});
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		init();
 	}
 
@@ -49,6 +42,13 @@ public class AccountAdd extends JDialog {
 	}	
 	
 	private void init() {
+		addWindowListener(new WindowAdapter() {
+            public void windowDeactivated(WindowEvent e) {
+                Server.getAccounts().setBlocked(false);
+            }
+		});
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
 		setAlwaysOnTop(true);
 		setTitle((!editMode) ? "Add new Account" : "Edit Account");
 		setResizable(false);

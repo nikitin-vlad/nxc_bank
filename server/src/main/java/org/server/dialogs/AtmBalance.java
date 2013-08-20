@@ -23,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AtmBalance extends JDialog {
 
@@ -52,7 +54,7 @@ public class AtmBalance extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblBalanceAmount = new JLabel("Balance amount:");
+		JLabel lblBalanceAmount = new JLabel("Balance:");
 		lblBalanceAmount.setBounds(10, 11, 102, 14);
 		contentPanel.add(lblBalanceAmount);
 		
@@ -71,7 +73,7 @@ public class AtmBalance extends JDialog {
 		atmBillName.setColumns(10);
 		
 		JLabel lblBillAmount = new JLabel("Bill amount");
-		lblBillAmount.setBounds(122, 37, 78, 14);
+		lblBillAmount.setBounds(122, 37, 128, 14);
 		contentPanel.add(lblBillAmount);
 		
 		atmBillAmount = new JTextField();
@@ -79,8 +81,9 @@ public class AtmBalance extends JDialog {
 		atmBillAmount.setBounds(122, 61, 102, 20);
 		contentPanel.add(atmBillAmount);
 		
-		JButton atmBtnAddBill = new JButton("Add");
-		atmBtnAddBill.setBounds(234, 60, 76, 21);
+		JButton atmBtnAddBill = new JButton("Save");
+		atmBtnAddBill.addMouseListener(atmSaveBill());
+		atmBtnAddBill.setBounds(234, 60, 91, 21);
 		contentPanel.add(atmBtnAddBill);
 		
 		JPanel atmBillsPanel = new JPanel();
@@ -89,10 +92,7 @@ public class AtmBalance extends JDialog {
 		atmBillsPanel.setLayout(new BorderLayout(0, 0));
 		
 		String[] atmBillsColumnNames = {"Bill name", "Bill amount"};
-		//Object[][] atmBillsTableData = this.atm.getBillsData();
-		Object[][] atmBillsTableData = {
-			{0, 0}
-		};
+		Object[][] atmBillsTableData = this.atm.getBillsData();
 		atmBillsTable = new JTable(atmBillsTableData, atmBillsColumnNames);
 		atmBillsTable.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -124,7 +124,24 @@ public class AtmBalance extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			
 			JButton btnRefresh = new JButton("Refresh");
+			btnRefresh.addMouseListener(atmBillsRefresh());
 			buttonPane.add(btnRefresh);
 		}
+	}
+
+	private MouseAdapter atmBillsRefresh() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		};
+	}
+
+	private MouseAdapter atmSaveBill() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		};
 	}
 }

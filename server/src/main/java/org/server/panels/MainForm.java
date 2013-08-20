@@ -84,7 +84,7 @@ public class MainForm {
 		accountsPanel.add(accountsListPanel);
 		accountsListPanel.setLayout(new BorderLayout(0, 0));
 
-		loadAccounts();		
+		loadAccounts(false);		
 		
 		accountsList = new JList<String>(accountsListModel);
 		accountsList.addListSelectionListener(accountsListSelectionChanged());
@@ -134,10 +134,10 @@ public class MainForm {
 		atmsPanel.add(atmsListPanel);
 		atmsListPanel.setLayout(new BorderLayout(0, 0));
 		
-		loadAtms();
+		loadAtms(false);
 		
 		atmsList = new JList<String>(atmsListModel);
-		accountsList.addListSelectionListener(atmsListSelectionChanged());
+		atmsList.addListSelectionListener(atmsListSelectionChanged());
 		atmsList.setValueIsAdjusting(true);
 		atmsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		atmsList.setSelectedIndex(0);
@@ -226,7 +226,10 @@ public class MainForm {
 					Server.getAccounts().setBlocked(true);
 					
 					Server.getAccounts().removeAccount(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString());
-					
+					loadAccounts(false);
+					if ( accountsListModel.size() > 0 ) {
+						accountsList.setSelectedIndex(0);
+					}
 					Server.getAccounts().setBlocked(false);
 				}
 			}
@@ -242,7 +245,10 @@ public class MainForm {
 					Server.getAtms().setBlocked(true);
 					
 					Server.getAtms().removeAtm(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString());
-					
+					loadAtms(false);
+					if ( atmsListModel.size() > 0 ) {
+						atmsList.setSelectedIndex(0);
+					}
 					Server.getAtms().setBlocked(false);
 				}				
 			}
@@ -269,8 +275,8 @@ public class MainForm {
 		};
 	}
 
-	public void loadAtms() {
-		if (Server.getAtms().isBlocked()) return;
+	public void loadAtms(boolean checkBlocked) {
+		if (checkBlocked == true && Server.getAtms().isBlocked()) return;
 		atmsListModel.clear();
 		for(int i = 0, l = Server.getAtms().count(); i <= l; i++) {
 			Atm atm = Server.getAtms().getAtm(i);
@@ -279,8 +285,8 @@ public class MainForm {
 		}
 	}
 
-	public void loadAccounts() {
-		if (Server.getAccounts().isBlocked()) return;
+	public void loadAccounts(boolean checkBlocked) {
+		if (checkBlocked == true && Server.getAccounts().isBlocked()) return;
 		accountsListModel.clear();
 		for(int i = 0, l = Server.getAccounts().count(); i <= l; i++) {
 			Account account = Server.getAccounts().getAccount(i);
