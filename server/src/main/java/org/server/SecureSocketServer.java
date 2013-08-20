@@ -11,7 +11,8 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
 public class SecureSocketServer {
-    public SecureSocketServer(ClientHandlerFactory clientFactory, SSLConfiguration sslConf) {
+
+	public SecureSocketServer(ClientHandlerFactory clientFactory, SSLConfiguration sslConf) {
         String storepass = sslConf.getStorepass();
         String keypass = sslConf.getKeypass();
         String keystoreLocation = sslConf.getJkskeyPath();
@@ -21,7 +22,9 @@ public class SecureSocketServer {
 
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-
+            
+            Server.keyStore = keyStore;
+            
             keyStore.load(new FileInputStream(keystoreLocation), storepass.toCharArray());
             KeyManagerFactory keyManagerFactory = KeyManagerFactory
                     .getInstance("SunX509");

@@ -1,6 +1,7 @@
 package org.server;
 
 import java.awt.EventQueue;
+import java.security.KeyStore;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,6 +19,7 @@ public class Server {
 
 	private static Accounts accounts = new Accounts();
 	private static Atms atms = new Atms();
+	public static KeyStore keyStore;
     
 	public static boolean isRunning = false;
 	private static MainForm window;

@@ -3,6 +3,7 @@ package org.atm;
 import java.io.BufferedReader;
 //import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,14 +34,14 @@ public class SecureSocketClient {
         String keystoreLocation = Config.keystoreLocation;
         
         char[] keyStorePassword = storepass.toCharArray();
-        System.setProperty("javax.net.ssl.trustStore", keystoreLocation);
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/ssl/client.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", storepass);
 
 
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
 //            keyStore.load(new FileInputStream(keystoreLocation), keyStorePassword);
-            keyStore.load(SecureSocketClient.class.getResourceAsStream(Config.keystoreLocation), keyStorePassword);
+            keyStore.load(SecureSocketClient.class.getResourceAsStream(keystoreLocation), keyStorePassword);
             
             Certificate certificate = keyStore.getCertificate("myclient");
             System.out.println(Arrays.hashCode(certificate.getPublicKey().getEncoded()));
@@ -78,7 +79,7 @@ public class SecureSocketClient {
 	        	socketWriter.flush();
 	        	
 	        	OperationResponse response = (OperationResponse)socketReader.readObject();
-	        	System.out.println(response.getStatus());
+	        	System.out.println(response.getStatus() + " "  + response.getMessage());
 	        }
         } catch (Exception e) {
         	e.printStackTrace();
