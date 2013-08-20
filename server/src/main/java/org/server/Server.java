@@ -23,9 +23,10 @@ public class Server {
     
 	public static boolean isRunning = false;
 	private static MainForm window;
+	private static DetailsUpdater dataUpdater;
+	private static MainForm gui;
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println("Server initialization goes here");
 		
 		JAXBContext jaxbContext = JAXBContext.newInstance(SSLConfiguration.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -44,14 +45,12 @@ public class Server {
 				new SecureSocketServer(new ClientHandlerFactory(), this.sc);
 			}
 		});
-		System.out.println("Server thread was started");
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 			        isRunning = true;
-					window = new MainForm();
-					window.frmBankServer.setVisible(true);
+					Server.initGui();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,6 +58,11 @@ public class Server {
 		});		
 	}
 	
+	protected static void initGui() {
+		gui = new MainForm();
+		gui.frmBankServer.setVisible(true);
+	}
+
 	public static Accounts getAccounts() {
 		return accounts;
 	}
@@ -67,8 +71,19 @@ public class Server {
 		return atms;
 	}
 
+	public static void startUpdater(){
+		if (dataUpdater == null) {
+			dataUpdater = new DetailsUpdater();
+		}
+	}
+	
 	public static void updateData() {
 		window.loadAccounts(true);
 		window.loadAtms(true);
+	}
+
+	public static void updateDetailPanelsData() {
+		gui.updateAccountDetailsPanel();
+		gui.updateAtmDetailsPanel();
 	}
 }

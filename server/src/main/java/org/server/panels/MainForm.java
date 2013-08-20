@@ -149,6 +149,8 @@ public class MainForm {
 		JPanel atmsDetailsPanel = new JPanel();
 		atmsDetailsPanel.setBounds(210, 34, 389, 358);
 		atmsPanel.add(atmsDetailsPanel);
+		
+		Server.startUpdater();
 	}
 
 	private MouseAdapter balanceAtm() {
@@ -326,5 +328,13 @@ public class MainForm {
 				}
 			}
 		};
+	}
+
+	public void updateAccountDetailsPanel() {
+		
+	}
+
+	public void updateAtmDetailsPanel() {
+		
 	}	
 }
