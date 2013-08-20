@@ -44,7 +44,6 @@ public class MainForm {
 
 	private void initialize() {
 		frmBankServer = new JFrame();
-		frmBankServer.setAlwaysOnTop(true);
 		frmBankServer.setTitle("Bank - Server side");
 		frmBankServer.setResizable(false);
 		frmBankServer.setBounds(100, 100, 640, 480);
