@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -16,18 +17,40 @@ import org.server.Server;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AtmAdd extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField atmIdentifier, atmSSLFingerprint;
+	private JTextField atmIdentifier;
 	private JCheckBox atmStatus;
+	private boolean editMode;
+	private Atm atm;
 
 	public AtmAdd() {
-		setTitle("Add new ATM");
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				Server.getAtms().setBlocked(false);
+			}
+		});
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		init();
+	}
+
+	public AtmAdd(boolean mode, Atm atm) {
+		editMode = mode;
+		this.atm = atm;
+		init();
+	}	
+	
+	private void init() {
+		setTitle((!editMode) ? "Add new ATM" : "Edit ATM");
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 213, 225);
+		setBounds(100, 100, 213, 164);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -39,25 +62,21 @@ public class AtmAdd extends JDialog {
 		}
 		{
 			atmIdentifier = new JTextField();
-			atmIdentifier.setBounds(10, 36, 143, 20);
+			atmIdentifier.setBounds(10, 36, 177, 20);
+			if (editMode) {
+				atmIdentifier.setText(atm.getId());
+				atmIdentifier.setEnabled(false);
+			}
 			contentPanel.add(atmIdentifier);
 			atmIdentifier.setColumns(10);
 		}
 		{
-			JLabel lblAtmSslKey = new JLabel("ATM SSL Key fingerprint");
-			lblAtmSslKey.setBounds(10, 67, 143, 14);
-			contentPanel.add(lblAtmSslKey);
-		}
-		{
-			atmSSLFingerprint = new JTextField();
-			atmSSLFingerprint.setColumns(10);
-			atmSSLFingerprint.setBounds(10, 92, 175, 20);
-			contentPanel.add(atmSSLFingerprint);
-		}
-		{
 			atmStatus = new JCheckBox("Enabled");
 			atmStatus.setSelected(true);
-			atmStatus.setBounds(10, 119, 97, 23);
+			atmStatus.setBounds(10, 63, 97, 23);
+			if (editMode) {
+				atmStatus.setSelected(atm.getStatus());
+			}
 			contentPanel.add(atmStatus);
 		}
 		{
@@ -65,7 +84,7 @@ public class AtmAdd extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton((!editMode) ? "OK" : "Save");
 				okButton.addActionListener(submit());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
@@ -86,7 +105,6 @@ public class AtmAdd extends JDialog {
 
 	private void close() {
 		dispose();
-		Server.getAtms().setBlocked(false);
 	}
 	
 	private ActionListener submit() {
@@ -96,20 +114,33 @@ public class AtmAdd extends JDialog {
 					close();
 					return;
 				}
-				if (atmSSLFingerprint.getText().equals("")) {
-					close();
-					return;
-				}				
-				Atm atm = new Atm();
-				atm.setBalance(0.00);
-				atm.setId(atmIdentifier.getText());
-				atm.setSslKeyMark(atmSSLFingerprint.getText());
-				atm.setStatus(true);
-				Server.getAtms().addAtm(atm);
+				if (editMode) {
+					atm.setStatus(atmStatus.isSelected());
+				} else {
+					if (Server.getAtms().isExisting(atmIdentifier.getText())) {
+						JOptionPane.showMessageDialog(null,
+							    "ATM with such identifier already existed. Change please identifier and try again.",
+							    "Duplicate error",
+							    JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					Atm atm = new Atm();
+					atm.setBalance(0.00);
+					atm.setId(atmIdentifier.getText());
+					atm.setStatus(atmStatus.isSelected());
+					Server.getAtms().addAtm(atm);
+				}
 				close();
 				Server.updateData();
 			}
 		};
 	}
 
+	public void setEditMode(boolean mode) {
+		editMode = mode;
+	}
+	
+	public boolean getEditMode() {
+		return editMode;
+	}	
 }

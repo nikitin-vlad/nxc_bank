@@ -1,22 +1,22 @@
 package org.common.accounts;
 
+import java.util.List;
 import java.util.ArrayList;
 
-//import javax.xml.bind.JAXBContext;
-//import javax.xml.bind.JAXBException;
-//import javax.xml.bind.Marshaller;
-//import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-//import org.common.configs.Config;
+import static ch.lambdaj.Lambda.*;
 
+import org.hamcrest.Matchers;
+
+@XmlRootElement
 public class Accounts {
-
+	@XmlElement(name = "AccountList")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
 	
 	public Accounts() {
-//		try {
-
 			for (int i = 0, l = 5; i < l; i++) {
 				Account acc = new Account();
 				acc.setAmount(100.00);
@@ -24,26 +24,7 @@ public class Accounts {
 				acc.setPassword("pass"+i);
 				acc.setStatus(true);
 				data.add(acc);
-			}
-//			JAXBContext jaxbContextWrite = JAXBContext.newInstance(HashMap.class);
-//			Marshaller jaxbMarshaller = jaxbContextWrite.createMarshaller();
-//	 
-//			// output pretty printed
-//			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//	 
-//			jaxbMarshaller.marshal((Object)data, Accounts.class.getResourceAsStream(Config.accountsFile));
-//			
-//			
-//			JAXBContext jaxbContextRead = JAXBContext.newInstance(HashMap.class);
-//			Unmarshaller jaxbUnmarshaller = jaxbContextRead.createUnmarshaller();
-//			Object loadedData = jaxbUnmarshaller.unmarshal(Accounts.class.getResourceAsStream(Config.accountsFile));
-//			data = (HashMap<String, Account>) loadedData;
-//			System.out.println(data);
-
-//		} catch (JAXBException e) {
-//			e.printStackTrace();
-//		}
-	 
+			}	 
 	}
 	
 	public void clear() {
@@ -51,7 +32,9 @@ public class Accounts {
 	}
 	
 	public Account getAccount(String cardNumber) {
-		return null;
+		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		Object[] values = accounts.toArray();
+		return (values.length > 0) ? (Account) values[0] : null;
 	}
 	
 	public void addAccount(Account account) {
@@ -76,5 +59,21 @@ public class Accounts {
 			return (Account) values[index-1];
 		}
 		return null;
+	}
+
+	public void removeAccount(String cardNumber) {
+		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		if (!acountList.isEmpty()) {
+			Account account = acountList.get(0);
+			data.remove(account);
+		}
+	}
+
+	public boolean isExisting(String cardNumber) {
+		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		if (acountList.isEmpty()){
+			return false;
+		}
+		return true;
 	}
 }

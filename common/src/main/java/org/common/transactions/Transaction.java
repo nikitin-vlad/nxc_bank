@@ -2,6 +2,8 @@ package org.common.transactions;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Transaction {
 
 	private String cardNumber;
@@ -13,7 +15,7 @@ public class Transaction {
 	public String getCardNumber() {
 		return cardNumber;
 	}
-	
+	@XmlElement
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
@@ -21,7 +23,7 @@ public class Transaction {
 	public String getOperationName() {
 		return operationName;
 	}
-	
+	@XmlElement
 	public void setOperationName(String operationName) {
 		this.operationName = operationName;
 	}
@@ -29,7 +31,7 @@ public class Transaction {
 	public String getOperationData() {
 		return operationData;
 	}
-	
+	@XmlElement
 	public void setOperationData(String operationData) {
 		this.operationData = operationData;
 	}
@@ -37,7 +39,7 @@ public class Transaction {
 	public Date getCreated() {
 		return created;
 	}
-	
+	@XmlElement
 	public void setCreated(Date created) {
 		this.created = created;
 	}
@@ -45,7 +47,7 @@ public class Transaction {
 	public String getAtmId() {
 		return atmId;
 	}
-	
+	@XmlElement
 	public void setAtmId(String atmId) {
 		this.atmId = atmId;
 	}

@@ -1,8 +1,19 @@
 package org.common.atms;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hamcrest.Matchers;
+
+import static ch.lambdaj.Lambda.*;
+
+
+@XmlRootElement
 public class Atms {
+	@XmlElement(name = "AtmList")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
 	
@@ -11,7 +22,6 @@ public class Atms {
 			Atm atm = new Atm();
 			atm.setBalance(100.00);
 			atm.setId("ATM-"+(i+1));
-			atm.setSslKeyMark("SSLKEYFINGERPRINT"+i);
 			atm.setStatus(true);
 			data.add(atm);
 		}		
@@ -22,7 +32,10 @@ public class Atms {
 	}	
 	
 	public Atm getAtm(String id) {
-		return null;
+		List<Atm> accounts = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		Object[] values = accounts.toArray();
+		return (values.length > 0) ? (Atm) values[0] : null;
+		
 	}
 	
 	public void addAtm(Atm atm) {
@@ -47,5 +60,21 @@ public class Atms {
 			return (Atm) values[index-1];
 		}
 		return null;
+	}
+
+	public void removeAtm(String id) {
+		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		if (!atmList.isEmpty()) {
+			Atm atm = atmList.get(0);
+			data.remove(atm);
+		}
+	}
+
+	public boolean isExisting(String id) {
+		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
+		if (atmList.isEmpty()){
+			return false;
+		}
+		return true;
 	}	
 }
