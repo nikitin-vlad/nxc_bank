@@ -1,15 +1,21 @@
 package org.common.conversion;
 
 import java.io.File;
+import java.net.URL;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 public class XMLConversion {
 
-	public static void marshall(Object object){
+	
+	public static void marshall(Object object, String confPath){
 		  try {
-				File file = new File("filepath");
+			    URL resoursePath = object.getClass().getResource(confPath);
+			    String path = resoursePath.getPath();
+			    
+				File file = new File(path);
 				JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
 				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -22,9 +28,4 @@ public class XMLConversion {
 				e.printStackTrace();
 	      }
 	}
-	
-	public static Object unMarshall(){
-		return null;
-	}
-
 }

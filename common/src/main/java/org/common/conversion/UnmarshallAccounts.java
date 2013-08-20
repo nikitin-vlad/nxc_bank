@@ -1,20 +1,25 @@
 package org.common.conversion;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.common.accounts.Accounts;
+import org.common.configs.Config;
 
 public class UnmarshallAccounts extends XMLConversion {
 	
-	private static String path = "filepath";
+
 	
 	public static Accounts unMarshall(){
 		try {
-		 
+
+			URL resoursePath = Accounts.class.getResource(Config.accountsFile);
+		    String path = resoursePath.getPath();
+		    
 			File file = new File(path);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Accounts.class);
 		

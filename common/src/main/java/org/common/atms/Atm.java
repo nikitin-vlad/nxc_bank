@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.common.conversion.MapAdapter;
+import org.common.conversion.MapBillsAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,7 +49,7 @@ public class Atm {
 		return bills;
 	}
 	
-    @XmlJavaTypeAdapter(MapAdapter.class)
+    @XmlJavaTypeAdapter(MapBillsAdapter.class)
 	@XmlElement(name="bills")
 	public void setBills(HashMap<Integer, Integer> bills) {
 		this.bills = bills;

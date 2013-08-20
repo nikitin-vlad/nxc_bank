@@ -3,20 +3,15 @@ package org.common.conversion;
 import java.util.*;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
  
-public class MapAdapter extends XmlAdapter<MapAdapter.AdaptedMap, Map<Integer, Integer>> {
+public class MapBillsAdapter extends XmlAdapter<MapBillsAdapter.AdaptedMap, Map<Integer, Integer>> {
      
     public static class AdaptedMap {
-         
         public List<Entry> entry = new ArrayList<Entry>();
-  
     }
      
     public static class Entry {
-         
         public Integer key;
-         
         public Integer value;
-   
     }
  
     public Map<Integer, Integer> unmarshal(AdaptedMap adaptedMap) throws Exception {
