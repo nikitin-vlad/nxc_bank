@@ -1,29 +1,36 @@
 package org.common.atms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.common.accounts.Account;
+import org.common.accounts.Accounts;
+import org.common.conversion.UnmarshallAccounts;
+import org.common.conversion.UnmarshallAtms;
 import org.hamcrest.Matchers;
 
 import static ch.lambdaj.Lambda.*;
 
 
-@XmlRootElement
+
 public class Atms {
-	@XmlElement(name = "AtmList")
+//	@XmlElement(name = "AtmList")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
 	
 	public Atms() {
-		for (int i = 0, l = 5; i < l; i++) {
-			Atm atm = new Atm();
-			atm.setId("ATM-"+(i+1));
-			atm.setStatus(true);
-			data.add(atm);
-		}		
+//		for (int i = 0, l = 5; i < l; i++) {
+//			Atm atm = new Atm();
+//			atm.setId("ATM-"+(i+1));
+//			atm.setStatus(true);
+//			data.add(atm);
+//		}	
+		Atms atms = UnmarshallAtms.unMarshall();
+		data.addAll((Collection<? extends Atm>) atms);
 	}
 	
 	public void clear() {

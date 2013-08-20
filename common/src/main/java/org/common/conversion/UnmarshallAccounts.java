@@ -12,8 +12,6 @@ import org.common.configs.Config;
 
 public class UnmarshallAccounts extends XMLConversion {
 	
-
-	
 	public static Accounts unMarshall(){
 		try {
 

@@ -1,5 +1,6 @@
 package org.common.accounts;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,23 +9,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static ch.lambdaj.Lambda.*;
 
+import org.common.conversion.UnmarshallAccounts;
 import org.hamcrest.Matchers;
 
 @XmlRootElement
 public class Accounts {
-	@XmlElement(name = "AccountList")
+//	@XmlElement(name = "AccountList")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
 	
 	public Accounts() {
-			for (int i = 0, l = 5; i < l; i++) {
-				Account acc = new Account();
-				acc.setAmount(100.00);
-				acc.setCardNumber("1000000000000"+(i+1));
-				acc.setPassword("pass"+i);
-				acc.setStatus(true);
-				data.add(acc);
-			}	 
+//			for (int i = 0, l = 5; i < l; i++) {
+//				Account acc = new Account();
+//				acc.setAmount(100.00);
+//				acc.setCardNumber("1000000000000"+(i+1));
+//				acc.setPassword("pass"+i);
+//				acc.setStatus(true);
+//				data.add(acc);
+//			}
+		Accounts accounts = UnmarshallAccounts.unMarshall();
+		data.addAll((Collection<? extends Account>) accounts);
 	}
 	
 	public void clear() {
