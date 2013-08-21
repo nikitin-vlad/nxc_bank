@@ -1,15 +1,14 @@
 package org.common.accounts;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import static ch.lambdaj.Lambda.*;
 
-import org.common.conversion.UnmarshallAccounts;
+import org.common.configs.Config;
+import org.common.conversion.XMLConversion;
 import org.hamcrest.Matchers;
 
 @XmlRootElement
@@ -17,7 +16,8 @@ public class Accounts {
 //	@XmlElement(name = "AccountList")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
-	
+    private static String path = "common/target/resources" + Config.accountsFile;
+
 	public Accounts() {
 //			for (int i = 0, l = 5; i < l; i++) {
 //				Account acc = new Account();
@@ -27,8 +27,7 @@ public class Accounts {
 //				acc.setStatus(true);
 //				data.add(acc);
 //			}
-		Accounts accounts = UnmarshallAccounts.unMarshall();
-		data.addAll((Collection<? extends Account>) accounts);
+        Accounts acc = XMLConversion.unMarshall(Accounts.class, path);
 	}
 	
 	public void clear() {
