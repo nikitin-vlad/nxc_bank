@@ -1,14 +1,25 @@
 package org.common.transactions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+import org.common.atms.Atm;
+import org.common.atms.Atms;
+import org.common.conversion.UnmarshallAtms;
+import org.common.conversion.UnmarshallTransactions;
+
+
 public class Transactions {
-	@XmlElement(name = "TransactionList")
+
 	private ArrayList<Transaction> data = new ArrayList<Transaction>();
+	
+	public Transactions() {
+		Transactions transaction = UnmarshallTransactions.unMarshall();
+		data.addAll((Collection<? extends Transaction>) transaction);
+	}
 
 	public ArrayList<Transaction> getData() {
 		return data;

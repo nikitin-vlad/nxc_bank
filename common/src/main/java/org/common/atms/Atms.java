@@ -2,6 +2,7 @@ package org.common.atms;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -16,21 +17,24 @@ import org.hamcrest.Matchers;
 import static ch.lambdaj.Lambda.*;
 
 
-
+@XmlRootElement
 public class Atms {
-//	@XmlElement(name = "AtmList")
+	@XmlElement(name = "AtmList")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
 	
 	public Atms() {
-//		for (int i = 0, l = 5; i < l; i++) {
-//			Atm atm = new Atm();
-//			atm.setId("ATM-"+(i+1));
-//			atm.setStatus(true);
-//			data.add(atm);
-//		}	
-		Atms atms = UnmarshallAtms.unMarshall();
-		data.addAll((Collection<? extends Atm>) atms);
+		for (int i = 0, l = 5; i < l; i++) {
+			Atm atm = new Atm();
+			atm.setId("ATM-"+(i+1));
+			atm.setStatus(true);
+			HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
+			bills.put(12 + i, 10 + 2*i);
+			atm.setBills(bills);
+			data.add(atm);
+		}	
+//		Atms atms = UnmarshallAtms.unMarshall();
+//		data.addAll((Collection<? extends Atm>) atms);
 	}
 	
 	public void clear() {
