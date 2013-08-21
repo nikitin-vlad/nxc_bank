@@ -35,8 +35,7 @@
 		<module>common</module>
 		<module>server</module>
 		<module>atm</module>
-    	<module>webclient</module>
-  </modules>
+    </modules>
 	
 	<build>
 		<plugins>
