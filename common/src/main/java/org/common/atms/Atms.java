@@ -136,4 +136,8 @@ public class Atms {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public  ArrayList<Atm> getAll () {
+		return data;
+	}
 }
