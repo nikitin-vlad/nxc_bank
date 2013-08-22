@@ -11,9 +11,11 @@ import org.common.operations.OperationRequest;
 public class ClientHandler extends Thread {
     
     private SSLSocket clientSocket;
+    private String atmName;
 
-    ClientHandler(SSLSocket s) {
+    ClientHandler(SSLSocket s, String atmN) {
         clientSocket = s;
+        atmName = atmN;
     }
     
     @Override

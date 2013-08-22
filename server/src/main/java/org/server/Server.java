@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.server.http.HttpServer;
 import org.server.panels.MainForm;
 import org.common.accounts.Accounts;
 import org.common.atms.Atms;
@@ -33,6 +34,13 @@ public class Server {
 			}
 		});
 		
+		exec.execute(new Runnable() {
+			@Override
+			public void run() {
+				new HttpServer(8080);
+			}
+		});
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
