@@ -1,7 +1,13 @@
 package org.common.accounts;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.common.operations.OperationType;
+import org.common.transactions.Transaction;
+import org.common.transactions.Transactions;
 
 @XmlRootElement
 public class Account {
@@ -39,6 +45,15 @@ public class Account {
 	}
 	
 	public Double getAmount() {
+		Transactions transactions = new Transactions();
+		Transaction transaction = new Transaction();
+		
+		transaction.setCardNumber(cardNumber);
+		transaction.setOperationName(OperationType.Balance.toString());
+		transaction.setCreated(new Date());
+		
+		transactions = transactions.getTransactions();
+		transactions.addTransaction(transaction);
 		return amount;
 	}
 	

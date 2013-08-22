@@ -59,17 +59,14 @@ public class Atm {
 	}
 
 	public Object[][] getBillsData() {
-		
 		final Object[][] result = new Object[bills.size()][2];
 		final Iterator<?> iter = bills.entrySet().iterator();
 
 		int i = 0;
 		while(iter.hasNext()){
 		    final Map.Entry<?, ?> mapping = (Map.Entry<?, ?>) iter.next();
-
 		    result[i][0] = mapping.getKey();
 		    result[i][1] = mapping.getValue();
-
 		    i++;
 		}
 
