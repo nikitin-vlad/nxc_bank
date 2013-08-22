@@ -17,10 +17,10 @@ public class Controller {
 		if (account == null) {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid card number");
 		}
-		Atm atm = Server.getAtms().getAtm( request.getAtm() );
 		if (atm == null) {
 			return new OperationResponse(OperationResponseStatus.WrongAtm, "You are operating on broken ATM! Find another one please.");
 		}
+		
 		int money;
 		
 		switch (request.getOperation())
@@ -31,6 +31,8 @@ public class Controller {
 			money = Integer.parseInt(request.getData());
 			if (money > account.getAmount()) {
 				return new OperationResponse(OperationResponseStatus.CardNotEnoughCash, "Wrong amount, try another amount!");
+			} else if (money > atm.getBalance()) {
+				return new OperationResponse(OperationResponseStatus.AtmNotEnoughCash, "Too big amount for current atm, try another amount!");
 			} else {
 				return new OperationResponse(OperationResponseStatus.OK, atm.getCash(account, money));
 			}
