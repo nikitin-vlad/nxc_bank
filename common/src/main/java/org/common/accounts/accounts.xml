@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <accounts>
     <account>
-        <amount>1010.0</amount>
-        <cardNumber>1010</cardNumber>
-        <password>1010</password>
+        <amount>4545.0</amount>
+        <cardNumber>4545</cardNumber>
+        <password>4545</password>
+        <status>true</status>
+    </account>
+    <account>
+        <amount>1212.0</amount>
+        <cardNumber>1212</cardNumber>
+        <password>1212</password>
         <status>true</status>
     </account>
     <blocked>false</blocked>
