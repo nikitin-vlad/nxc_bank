@@ -26,7 +26,7 @@ public class Controller {
 		switch (request.getOperation())
 		{
 		case Balance:
-			return new OperationResponse(OperationResponseStatus.OK, "Your card balanse is " + account.getAmount());
+			return new OperationResponse(OperationResponseStatus.OK, account.getAmount() + "");
 		case GetCash:
 			money = Integer.parseInt(request.getData());
 			if (money > account.getAmount()) {

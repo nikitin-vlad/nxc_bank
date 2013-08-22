@@ -2,18 +2,19 @@ package org.server.http;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import org.common.accounts.Account;
-import org.common.atms.Atm;
+import org.common.operations.OperationRequest;
+import org.common.operations.OperationResponse;
+import org.common.operations.OperationResponseStatus;
+import org.common.operations.OperationType;
+import org.server.Controller;
 import org.server.Server;
 
 public class HttpServer {
@@ -66,7 +67,23 @@ public class HttpServer {
             		os.write(response.getBytes());
                     os.flush();
             	} else {
-            		writeResponse("<html><body><h1>Hello from Habrahabr</h1></body></html>");
+            		Controller controller = new Controller();
+            		OperationRequest request;
+            		OperationResponse res = null;
+            		String[] logPass = getUserPassDecoded(auth).split(":");
+            		switch (command)
+            		{
+            		case "/operations/balace":
+            			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Balance);
+            			res = controller.handleRequest(request);
+            		case "/transactions":
+            			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Transactions);
+            			res = controller.handleRequest(request);
+            		}
+            		if (res != null && res.getStatus() == OperationResponseStatus.OK)
+            			writeResponse(res.getMessage());
+            		else
+            			writeResponse("error");
             	}
             } catch (Throwable t) {
                 /*do nothing*/

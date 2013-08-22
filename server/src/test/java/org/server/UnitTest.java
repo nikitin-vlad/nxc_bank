@@ -33,7 +33,7 @@ public class UnitTest {
 			jaxbMarshaller.marshal(sc, System.out);
 		}
 	}
-
+/*
 	@Test
 	public void getCashTest() throws Exception {
 		Atm atm = new Atm();
@@ -52,5 +52,5 @@ public class UnitTest {
 		account.setAmount(5560.00);
 		
 		System.out.println(atm.getCash(account, 2600));
-	}
+	}*/
 }
