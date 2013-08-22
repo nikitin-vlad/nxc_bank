@@ -52,7 +52,7 @@ public class HttpServer {
             this.is = s.getInputStream();
             this.os = s.getOutputStream();
             this.br = new BufferedReader(new InputStreamReader(is));
-            command = getUri();
+            setCommand(getUri());
             headers = readInputHeaders();
             System.out.println("helllo");
         }
@@ -155,5 +155,13 @@ public class HttpServer {
             sun.misc.BASE64Decoder dec = new sun.misc.BASE64Decoder();  
             return new String(dec.decodeBuffer(userpassEncoded));  
         }
+
+		public String getCommand() {
+			return command;
+		}
+
+		public void setCommand(String command) {
+			this.command = command;
+		}
     }
 }
