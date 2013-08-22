@@ -9,5 +9,6 @@ public enum OperationResponseStatus {
 	ServerError,
 	IncorrectRequest,
 	NonRegisteredAtm,
-	OperationNotSupported
+	OperationNotSupported,
+	WrongAtm
 }

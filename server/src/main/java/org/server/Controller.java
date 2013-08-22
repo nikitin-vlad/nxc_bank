@@ -5,7 +5,6 @@ import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationResponseStatus;
 
-//TODO implement getcash case
 public class Controller {
 	
 	public OperationResponse handleRequest(OperationRequest request) {
@@ -13,18 +12,27 @@ public class Controller {
 		if (account == null) {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid card number");
 		}
+		Atm atm = Server.getAtms().getAtm( request.getAtm() );
+		if (atm == null) {
+			return new OperationResponse(OperationResponseStatus.WrongAtm, "You are operating on broken ATM! Find another one please.");
+		}
+		int money;
 		
 		switch (request.getOperation())
 		{
 		case Balance:
 			return new OperationResponse(OperationResponseStatus.OK, "Your card balanse is " + account.getAmount());
-		//TODO implement getcash case
 		case GetCash:
-			return new OperationResponse(OperationResponseStatus.OK, "here you are sere ");
+			money = Integer.parseInt(request.getData());
+			if (money > account.getAmount()) {
+				return new OperationResponse(OperationResponseStatus.CardNotEnoughCash, "Wrong amount, try another amount!");
+			} else {
+				return new OperationResponse(OperationResponseStatus.OK, atm.getCash(account, money));
+			}
 		case ReloadAmount:
-			int money = Integer.parseInt(request.getData());
+			money = Integer.parseInt(request.getData());
 			account.setAmount(account.getAmount() + money);
-			return new OperationResponse(OperationResponseStatus.OK, "Your card balanse was successfully changed, now is " + account.getAmount());
+			return new OperationResponse(OperationResponseStatus.OK, "Your card balance was successfully changed, your current balance: " + account.getAmount());
 		case Transactions:
 			
 		}

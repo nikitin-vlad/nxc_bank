@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.common.accounts.Account;
 import org.common.conversion.MapBillsAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -75,6 +76,17 @@ public class Atm {
 	
 	public void addBill(int billName, int billAmount) {
 		bills.put(billName, billAmount);
+	}
+	
+	public String getCash(Account account, int money) {
+		try {
+			account.setAmount(account.getAmount() - money);
+			
+		} catch (Exception e) {
+			account.setAmount(account.getAmount() + money);
+			return "Please, try again later.";
+		}
+		return "Operation successfull. Dont forget money and you card! See you next time. Bye.";
 	}
 	
 }
