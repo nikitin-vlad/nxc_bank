@@ -1,5 +1,6 @@
 package org.common.atms;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,6 +8,9 @@ import java.util.Map.Entry;
 
 import org.common.accounts.Account;
 import org.common.conversion.MapBillsAdapter;
+import org.common.operations.OperationType;
+import org.common.transactions.Transaction;
+import org.common.transactions.Transactions;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -79,6 +83,15 @@ public class Atm {
 		try {
 			account.setAmount(account.getAmount() - money);
 			
+			Transactions transactions = new Transactions();
+			Transaction transaction = new Transaction();
+			
+			transaction.setCardNumber(account.getCardNumber());
+			transaction.setOperationName(OperationType.GetCash.toString());
+			transaction.setCreated(new Date());
+			
+			transactions = transactions.getTransactions();
+			transactions.addTransaction(transaction);
 					
 		} catch (Exception e) {
 			account.setAmount(account.getAmount() + money);
