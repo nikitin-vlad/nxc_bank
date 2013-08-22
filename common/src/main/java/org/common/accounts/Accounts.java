@@ -3,6 +3,7 @@ package org.common.accounts;
 import java.util.List;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import static ch.lambdaj.Lambda.*;
@@ -13,12 +14,12 @@ import org.hamcrest.Matchers;
 
 @XmlRootElement
 public class Accounts {
-//	@XmlElement(name = "AccountList")
+	@XmlElement(name = "account")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
     private static String path = "common/target/resources" + Config.accountsFile;
 
-	public Accounts() {
+//	public Accounts() {
 //			for (int i = 0, l = 5; i < l; i++) {
 //				Account acc = new Account();
 //				acc.setAmount(100.00);
@@ -27,11 +28,25 @@ public class Accounts {
 //				acc.setStatus(true);
 //				data.add(acc);
 //			}
-        Accounts acc = XMLConversion.unMarshall(Accounts.class, path);
-	}
+//	}
 	
 	public void clear() {
 		data.clear();
+	}
+	public ArrayList<Account> init(){
+		Accounts acc = XMLConversion.unMarshall(Accounts.class, path);
+		int i = 1;
+		try{
+			while(acc.getAccount(i) != null){
+				data.add(acc.getAccount(i));
+				i++;
+			}
+		}
+		catch(ArrayIndexOutOfBoundsException e){
+			e.getMessage();			
+		}
+
+		return data;
 	}
 	
 	public Account getAccount(String cardNumber) {
@@ -41,7 +56,9 @@ public class Accounts {
 	}
 	
 	public void addAccount(Account account) {
+		this.init();
 		data.add(account);
+		XMLConversion.marshall(this, path);
 	}
 
 	public boolean isBlocked() {
@@ -65,11 +82,13 @@ public class Accounts {
 	}
 
 	public void removeAccount(String cardNumber) {
+		this.init();
 		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		if (!acountList.isEmpty()) {
 			Account account = acountList.get(0);
 			data.remove(account);
 		}
+		XMLConversion.marshall(this, path);
 	}
 
 	public boolean isExisting(String cardNumber) {

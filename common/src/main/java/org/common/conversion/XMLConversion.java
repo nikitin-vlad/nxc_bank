@@ -7,10 +7,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+
 public class XMLConversion {
 
 	
-	public static < E > void marshall(E object, String path){
+	public static void marshall(Object object, String path){
 		  try {
 
 				File file = new File(path);
@@ -27,7 +28,8 @@ public class XMLConversion {
 	      }
 	}
 
-    public static < E > E unMarshall(Class< E > typeClass, String path){
+    @SuppressWarnings("unchecked")
+	public static < E > E unMarshall(Class< E > typeClass, String path){
         try {
 
             File file = new File(path);
@@ -53,7 +55,11 @@ public class XMLConversion {
 //	}
 //
 //	public static void main(String[] args) throws Exception {
-//        Atms atms = unMarshall(Atms.class, "common/target/resources" + Config.atmsFile);
+//        Atms atms = unMarshall(Atms.class, "target/classes" + Config.atmsFile);
 //        System.out.println(atms.getAtm(5).getBills());
+//    }
+//	public static void main(String[] args) throws Exception {
+//        Atms atms = new Atms();
+//        marshall(atms, "target/classes" + Config.atmsFile);
 //    }
 }
