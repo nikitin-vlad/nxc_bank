@@ -8,5 +8,6 @@ public enum OperationResponseStatus {
 	BanknotesAmmountError,
 	ServerError,
 	IncorrectRequest,
-	NonRegisteredAtm
+	NonRegisteredAtm,
+	OperationNotSupported
 }

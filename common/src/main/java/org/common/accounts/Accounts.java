@@ -10,6 +10,8 @@ import static ch.lambdaj.Lambda.*;
 
 import org.common.configs.Config;
 import org.common.conversion.XMLConversion;
+import org.common.operations.OperationResponse;
+import org.common.operations.OperationResponseStatus;
 import org.hamcrest.Matchers;
 
 @XmlRootElement
@@ -54,6 +56,20 @@ public class Accounts {
 		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		Object[] values = accounts.toArray();
 		return (values.length > 0) ? (Account) values[0] : null;
+	}
+
+	public Account getAccount(String cardNumber, int pass) {
+		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
+		Object[] values = accounts.toArray();
+		
+		if (values.length == 0) {
+			return null;
+		}
+		Account accaunt = (Account)(values[0]); 
+		if (accaunt.getPassword() != pass) {
+			return null;
+		}
+		return accaunt;
 	}
 	
 	public void addAccount(Account account) {

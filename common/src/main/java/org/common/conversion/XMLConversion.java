@@ -1,8 +1,5 @@
 package org.common.conversion;
 
-import org.common.accounts.Account;
-import org.common.accounts.Accounts;
-import org.common.configs.Config;
 
 import java.io.File;
 
@@ -17,8 +14,8 @@ public class XMLConversion {
 	
 	public static void marshall(Object object, String path){
 		  try {
-
-				File file = new File(path);
+			  	String fileName = object.getClass().getClassLoader().getResource(path).getPath();
+				File file = new File(fileName);
 				JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
 				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -35,8 +32,8 @@ public class XMLConversion {
     @SuppressWarnings("unchecked")
 	public static < E > E unMarshall(Class< E > typeClass, String path){
         try {
-
-            File file = new File(path);
+        	String fileName = typeClass.getClassLoader().getResource(path).getPath();
+            File file = new File(fileName);
             JAXBContext jaxbContext = JAXBContext.newInstance(typeClass);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

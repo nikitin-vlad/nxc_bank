@@ -1,17 +1,15 @@
 package org.server;
 
 import java.awt.EventQueue;
-import java.security.KeyStore;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 
 import org.server.panels.MainForm;
 import org.common.accounts.Accounts;
 import org.common.atms.Atms;
 import org.common.configs.Config;
+import org.common.configs.SSLConfiguration;
+import org.common.conversion.XMLConversion;
 
  
 
@@ -19,7 +17,6 @@ public class Server {
 
 	private static Accounts accounts = new Accounts();
 	private static Atms atms = new Atms();
-	public static KeyStore keyStore;
     
 	public static boolean isRunning = false;
 	private static DetailsUpdater dataUpdater;
@@ -27,21 +24,12 @@ public class Server {
 	
 	public static void main(String[] args) throws Exception {
 		
-		JAXBContext jaxbContext = JAXBContext.newInstance(SSLConfiguration.class);
-		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		final SSLConfiguration serverConf = (SSLConfiguration) jaxbUnmarshaller.unmarshal(Server.class.getResourceAsStream(Config.sslConfig));
-		
 		ExecutorService exec = Executors.newCachedThreadPool();
 		
 		exec.execute(new Runnable() {
-			SSLConfiguration sc;
-			{
-				this.sc = serverConf;
-			}
-			
 			@Override
 			public void run() {
-				new SecureSocketServer(new ClientHandlerFactory(), this.sc);
+				new SecureSocketServer(new ClientHandlerFactory(), XMLConversion.unMarshall(SSLConfiguration.class, Config.sslConfig));
 			}
 		});
 		

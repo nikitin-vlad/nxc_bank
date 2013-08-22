@@ -1,33 +1,19 @@
 package org.server;
 
 import org.common.accounts.Account;
-import org.common.atms.Atm;
 import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationResponseStatus;
+
 //TODO implement getcash case
 public class Controller {
-	private ClientHandler clientHandler;
-	
-	public Controller(ClientHandler ch) {
-		this.clientHandler = ch;
-	}
 	
 	public OperationResponse handleRequest(OperationRequest request) {
-		Account account = Server.getAccounts().getAccount(request.getCardNumber());
+		Account account = Server.getAccounts().getAccount(request.getCardNumber(), request.getPass());
 		if (account == null) {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid card number");
 		}
 		
-		//if ( !account.getPassword().equals(Integer.valueOf(request.getPass())) ) {
-		if ( !(account.getPassword() == Integer.valueOf(request.getPass())) ) {
-			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid password");
-		}
-		
-		Atm atm = Server.getAtms().getAtm(this.clientHandler.getClientName());
-		if (atm == null) {
-			return new OperationResponse(OperationResponseStatus.NonRegisteredAtm, "this atm is'nt registered, contact administrator");
-		}
 		switch (request.getOperation())
 		{
 		case Balance:
@@ -39,7 +25,9 @@ public class Controller {
 			int money = Integer.parseInt(request.getData());
 			account.setAmount(account.getAmount() + money);
 			return new OperationResponse(OperationResponseStatus.OK, "Your card balanse was successfully changed, now is " + account.getAmount());
+		case Transactions:
+			
 		}
-		return new OperationResponse(OperationResponseStatus.OK, "");
+		return new OperationResponse(OperationResponseStatus.OperationNotSupported, "Unknown operation");
 	}
 }
