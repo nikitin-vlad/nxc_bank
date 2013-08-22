@@ -3,17 +3,21 @@ package org.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.net.ssl.SSLSocket;
 
+import org.common.atms.Atm;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationRequest;
 
 public class ClientHandler extends Thread {
     
     private SSLSocket clientSocket;
+    private Atm atm;
 
-    ClientHandler(SSLSocket s) {
+    ClientHandler(SSLSocket s, Atm atmN) {
         clientSocket = s;
+        atm = atmN;
     }
     
     @Override
@@ -26,6 +30,7 @@ public class ClientHandler extends Thread {
         	OperationRequest request = null;
         	OperationResponse response = null;
         	Controller controller = new Controller();
+        	controller.setAtm(atm);
             while (true) {
                 request = (OperationRequest)in.readObject();
             	response = controller.handleRequest(request);
