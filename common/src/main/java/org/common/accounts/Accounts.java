@@ -2,13 +2,18 @@ package org.common.accounts;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import static ch.lambdaj.Lambda.*;
 
+import org.common.configs.Config;
 import org.common.conversion.XMLConversion;
+import org.common.operations.OperationType;
+import org.common.transactions.Transaction;
+import org.common.transactions.Transactions;
 import org.hamcrest.Matchers;
 
 @XmlRootElement
@@ -17,19 +22,9 @@ public class Accounts {
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
 //    private static String path = "common/target/resources" + Config.accountsFile;
-    private static String path = "common/src/main/java/org/common/accounts/accounts.xml";
+	private static String path = Config.accountsFile;
+//    private static String path = "common/src/main/java/org/common/accounts/accounts.xml";
 
-//	public Accounts() {
-//			for (int i = 0, l = 5; i < l; i++) {
-//				Account acc = new Account();
-//				acc.setAmount(100.00);
-//				acc.setCardNumber("1000000000000"+(i+1));
-//				acc.setPassword("pass"+i);
-//				acc.setStatus(true);
-//				data.add(acc);
-//			}
-//	}
-	
 	public void clear() {
 		data.clear();
 	}
@@ -49,6 +44,11 @@ public class Accounts {
 		return data;
 	}
 	
+	public Accounts getAccounts(){
+		Accounts accs = XMLConversion.unMarshall(Accounts.class, path);
+		return accs;
+	}
+	
 	public Account getAccount(String cardNumber) {
 		List<Account> accounts = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		Object[] values = accounts.toArray();
@@ -66,15 +66,23 @@ public class Accounts {
 		if (accaunt.getPassword() != pass) {
 			return null;
 		}
+		
+		Transactions transactions = new Transactions();
+		Transaction transaction = new Transaction();
+		
+		transaction.setCardNumber(cardNumber);
+		transaction.setOperationName(OperationType.UserLogin.toString());
+		transaction.setCreated(new Date());
+		
+		transactions = transactions.getTransactions();
+		transactions.addTransaction(transaction);
 		return accaunt;
 	}
 	
 	public void addAccount(Account account) {
-		//this.init();
 		data.add(account);
         Accounts accs = new Accounts();
         accs.data = data;
-        //XMLConversion.marshall(this, path);
         XMLConversion.marshall(accs, path);
 	}
 
@@ -99,7 +107,6 @@ public class Accounts {
 	}
 
 	public void removeAccount(String cardNumber) {
-		//this.init();
 		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		if (!acountList.isEmpty()) {
 			Account account = acountList.get(0);
@@ -107,7 +114,6 @@ public class Accounts {
 		}
         Accounts accs = new Accounts();
         accs.data = data;
-        //XMLConversion.marshall(this, path);
         XMLConversion.marshall(accs, path);
 	}
 

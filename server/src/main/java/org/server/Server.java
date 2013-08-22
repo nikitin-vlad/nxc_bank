@@ -26,6 +26,9 @@ public class Server {
 		
 		ExecutorService exec = Executors.newCachedThreadPool();
 		
+		accounts = accounts.getAccounts();
+		atms = atms.getAtms();
+		
 		exec.execute(new Runnable() {
 			@Override
 			public void run() {
