@@ -1,11 +1,16 @@
 package org.server;
 
 import org.common.accounts.Account;
+import org.common.atms.Atm;
 import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationResponseStatus;
 
 public class Controller {
+	public Atm atm;
+	public void setAtm (Atm name) {
+		atm = name;
+	}
 	
 	public OperationResponse handleRequest(OperationRequest request) {
 		Account account = Server.getAccounts().getAccount(request.getCardNumber(), request.getPass());
