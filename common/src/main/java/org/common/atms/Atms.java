@@ -18,8 +18,10 @@ public class Atms {
 	@XmlElement(name = "atm")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
-	//private static String path = "common/target/resources" + Config.atmsFile;
-	private static String path = "target/classes" + Config.atmsFile;
+//	private static String path = "common/target/resources" + Config.atmsFile;
+//	private static String path = "target/classes" + Config.atmsFile;
+	private static String path = "common/src/main/java/org/common/atms/atms.xml";
+
 //	private Atms() {
 //		for (int i = 0, l = 5; i < l; i++) {
 //			Atm atm = new Atm();
@@ -40,7 +42,8 @@ public class Atms {
 	
 	public ArrayList<Atm> init(){
 		Atms atms = XMLConversion.unMarshall(Atms.class, path);
-		int i = 1;
+        System.out.println(atms.toString());
+        int i = 1;
 		try{
 			while(atms.getAtm(i) != null){
 				data.add(atms.getAtm(i));
@@ -81,9 +84,12 @@ public class Atms {
 	}
 	
 	public void addAtm(Atm atm) {
-		this.init();
+		//this.init();
 		data.add(atm);
-		XMLConversion.marshall(this, path);
+        Atms atms = new Atms();
+        atms.data = data;
+		//XMLConversion.marshall(this, path);
+		XMLConversion.marshall(atms, path);
 	}
 
 	public boolean isBlocked() {
@@ -107,13 +113,16 @@ public class Atms {
 	}
 
 	public void removeAtm(String id) {
-		this.init();
+		//this.init();
 		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
 		if (!atmList.isEmpty()) {
 			Atm atm = atmList.get(0);
 			data.remove(atm);
 		}
-		XMLConversion.marshall(this, path);
+        Atms atms = new Atms();
+        atms.data = data;
+		//XMLConversion.marshall(this, path);
+		XMLConversion.marshall(atms, path);
 	}
 
 	public boolean isExisting(String id) {

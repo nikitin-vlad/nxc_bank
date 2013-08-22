@@ -17,7 +17,8 @@ public class Accounts {
 	@XmlElement(name = "account")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
-    private static String path = "common/target/resources" + Config.accountsFile;
+//    private static String path = "common/target/resources" + Config.accountsFile;
+    private static String path = "common/src/main/java/org/common/accounts/accounts.xml";
 
 //	public Accounts() {
 //			for (int i = 0, l = 5; i < l; i++) {
@@ -56,9 +57,12 @@ public class Accounts {
 	}
 	
 	public void addAccount(Account account) {
-		this.init();
+		//this.init();
 		data.add(account);
-		XMLConversion.marshall(this, path);
+        Accounts accs = new Accounts();
+        accs.data = data;
+        //XMLConversion.marshall(this, path);
+        XMLConversion.marshall(accs, path);
 	}
 
 	public boolean isBlocked() {
@@ -82,13 +86,16 @@ public class Accounts {
 	}
 
 	public void removeAccount(String cardNumber) {
-		this.init();
+		//this.init();
 		List<Account> acountList = filter(having(on(Account.class).getCardNumber(), Matchers.equalTo(cardNumber)), data);
 		if (!acountList.isEmpty()) {
 			Account account = acountList.get(0);
 			data.remove(account);
 		}
-		XMLConversion.marshall(this, path);
+        Accounts accs = new Accounts();
+        accs.data = data;
+        //XMLConversion.marshall(this, path);
+        XMLConversion.marshall(accs, path);
 	}
 
 	public boolean isExisting(String cardNumber) {

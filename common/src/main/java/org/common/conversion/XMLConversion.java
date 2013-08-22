@@ -1,5 +1,9 @@
 package org.common.conversion;
 
+import org.common.accounts.Account;
+import org.common.accounts.Accounts;
+import org.common.configs.Config;
+
 import java.io.File;
 
 import javax.xml.bind.JAXBContext;
@@ -61,5 +65,19 @@ public class XMLConversion {
 //	public static void main(String[] args) throws Exception {
 //        Atms atms = new Atms();
 //        marshall(atms, "target/classes" + Config.atmsFile);
+//    }
+//	public static void main(String[] args) throws Exception {
+////            for (int i = 0, l = 5; i < l; i++) {
+//				Account acc = new Account();
+//				acc.setAmount(100.00);
+//				acc.setCardNumber("1000000000000"+1);
+//				acc.setPassword("pass"+5);
+//				acc.setStatus(true);
+//                marshall(acc, "common/src/main/java/org/common/accounts/accounts.xml");
+////			}
+//    }
+//    public static void main(String[] args) throws Exception {
+//        Accounts accs = unMarshall(Accounts.class, "common/src/main/java/org/common/accounts/accounts.xml");
+//        System.out.println(accs.toString());
 //    }
 }
