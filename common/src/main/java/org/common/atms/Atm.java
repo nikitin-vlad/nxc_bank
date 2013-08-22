@@ -1,11 +1,16 @@
 package org.common.atms;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.common.accounts.Account;
 import org.common.conversion.MapBillsAdapter;
+import org.common.operations.OperationType;
+import org.common.transactions.Transaction;
+import org.common.transactions.Transactions;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -56,17 +61,14 @@ public class Atm {
 	}
 
 	public Object[][] getBillsData() {
-		
 		final Object[][] result = new Object[bills.size()][2];
 		final Iterator<?> iter = bills.entrySet().iterator();
 
 		int i = 0;
 		while(iter.hasNext()){
 		    final Map.Entry<?, ?> mapping = (Map.Entry<?, ?>) iter.next();
-
 		    result[i][0] = mapping.getKey();
 		    result[i][1] = mapping.getValue();
-
 		    i++;
 		}
 
@@ -75,6 +77,27 @@ public class Atm {
 	
 	public void addBill(int billName, int billAmount) {
 		bills.put(billName, billAmount);
+	}
+	
+	public String getCash(Account account, int money) {
+		try {
+			account.setAmount(account.getAmount() - money);
+			
+			Transactions transactions = new Transactions();
+			Transaction transaction = new Transaction();
+			
+			transaction.setCardNumber(account.getCardNumber());
+			transaction.setOperationName(OperationType.GetCash.toString());
+			transaction.setCreated(new Date());
+			
+			transactions = transactions.getTransactions();
+			transactions.addTransaction(transaction);
+					
+		} catch (Exception e) {
+			account.setAmount(account.getAmount() + money);
+			return "Please, try again later.";
+		}
+		return "Operation successfull. Dont forget money and you card! See you next time. Bye.";
 	}
 	
 }

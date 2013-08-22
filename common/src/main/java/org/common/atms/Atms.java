@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.common.configs.Config;
 import org.common.conversion.XMLConversion;
 import org.hamcrest.Matchers;
 
@@ -17,27 +18,7 @@ public class Atms {
 	@XmlElement(name = "atm")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
-//	private static String path = "common/target/resources" + Config.atmsFile;
-//	private static String path = "target/classes" + Config.atmsFile;
-	private static String path = "common/src/main/java/org/common/atms/atms.xml";
-
-//	private Atms() {
-//		for (int i = 0, l = 5; i < l; i++) {
-//			Atm atm = new Atm();
-//			atm.setId("ATM-"+(i+1));
-//			atm.setStatus(true);
-//			HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
-//			bills.put(12 + 5*i, 10 + 2*i);
-//			bills.put(12 + 2*i, 10 + 6*i);
-//			bills.put(12 + 9*i, 10 + 7*i);
-//			atm.setBills(bills);
-//			data.add(atm);
-//			XMLConversion.marshall(this, path);
-//		}
-//      Atms atms = UnmarshallAtms.unMarshall(path);
-//		Atms atms = XMLConversion.unMarshall(Atms, path);
-//		data.addAll((Collection<? extends Atm>) atms);
-//	}
+	private static String path = Config.atmsFile;
 	
 	public ArrayList<Atm> init(){
 		Atms atms = XMLConversion.unMarshall(Atms.class, path);
@@ -52,25 +33,19 @@ public class Atms {
 		catch(ArrayIndexOutOfBoundsException e){
 			e.getMessage();			
 		}
-
 		return data;
 	}
 	
-//	public static void main(String[] args){
-//		Atms atms = new Atms();
-//		Atm atm = new Atm();
-//		atm.setId("ATM-" + 1530);
-//		atm.setStatus(true);
-//		HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
-//		bills.put(12 + 50, 10 + 20);
-//		bills.put(12 + 20, 10 + 60);
-//		bills.put(12 + 90, 10 + 70);
-//		atm.setBills(bills);
-//		atms.addAtm(atm);
-//		atms.removeAtm("ATM-1530");
-//		List<Atm> atsm = atms.init();
-//		System.out.println(atsm.toString());
-//	}
+	public void store(){
+		Atms atms = new Atms();
+		atms.data = data;
+		XMLConversion.marshall(atms, path);
+	}
+	
+	public Atms getAtms() {
+		Atms atms = XMLConversion.unMarshall(Atms.class, path);
+		return atms;
+	}
 	
 	public void clear() {
 		data.clear();
@@ -83,11 +58,9 @@ public class Atms {
 	}
 	
 	public void addAtm(Atm atm) {
-		//this.init();
 		data.add(atm);
         Atms atms = new Atms();
         atms.data = data;
-		//XMLConversion.marshall(this, path);
 		XMLConversion.marshall(atms, path);
 	}
 
@@ -112,7 +85,6 @@ public class Atms {
 	}
 
 	public void removeAtm(String id) {
-		//this.init();
 		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
 		if (!atmList.isEmpty()) {
 			Atm atm = atmList.get(0);
@@ -120,7 +92,6 @@ public class Atms {
 		}
         Atms atms = new Atms();
         atms.data = data;
-		//XMLConversion.marshall(this, path);
 		XMLConversion.marshall(atms, path);
 	}
 
@@ -132,12 +103,9 @@ public class Atms {
 		return true;
 	}
 
-	public void store() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public  ArrayList<Atm> getAll () {
 		return data;
 	}
+
 }
