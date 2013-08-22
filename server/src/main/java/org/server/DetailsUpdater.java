@@ -13,6 +13,7 @@ public class DetailsUpdater implements Runnable {
 	    while(rerun)
 	    {
 	    	Server.updateDetailPanelsData();
+	    	Server.pushDataToStorage();
 	        try{
 	            Thread.sleep(interval);
 	        } catch(Exception e){

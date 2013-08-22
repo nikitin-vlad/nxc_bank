@@ -118,4 +118,8 @@ public class Accounts {
 		}
 		return true;
 	}
+	public void store() {
+		// TODO Auto-generated method stub
+		
+	}
 }

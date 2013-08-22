@@ -73,4 +73,9 @@ public class Server {
 		gui.updateAccountDetailsPanel();
 		gui.updateAtmDetailsPanel();
 	}
+
+	public static void pushDataToStorage() {
+		accounts.store();
+		atms.store();
+	}
 }

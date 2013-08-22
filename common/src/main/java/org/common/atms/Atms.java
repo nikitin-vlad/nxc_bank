@@ -131,4 +131,9 @@ public class Atms {
 		}
 		return true;
 	}
+
+	public void store() {
+		// TODO Auto-generated method stub
+		
+	}
 }
