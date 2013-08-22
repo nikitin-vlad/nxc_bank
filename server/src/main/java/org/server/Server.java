@@ -22,7 +22,6 @@ public class Server {
 	public static KeyStore keyStore;
     
 	public static boolean isRunning = false;
-	private static MainForm window;
 	private static DetailsUpdater dataUpdater;
 	private static MainForm gui;
 	
@@ -78,8 +77,8 @@ public class Server {
 	}
 	
 	public static void updateData() {
-		window.loadAccounts(true);
-		window.loadAtms(true);
+		gui.loadAccounts(true);
+		gui.loadAtms(true);
 	}
 
 	public static void updateDetailPanelsData() {
