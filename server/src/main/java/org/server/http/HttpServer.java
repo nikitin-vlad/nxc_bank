@@ -76,7 +76,7 @@ public class HttpServer {
             		case "/operations/balace":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Balance);
             			res = controller.handleRequest(request);
-            		case "/transactions":
+            		case "/operations/transactions":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Transactions);
             			res = controller.handleRequest(request);
             		}
