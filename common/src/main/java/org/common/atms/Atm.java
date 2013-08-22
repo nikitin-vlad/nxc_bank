@@ -1,5 +1,7 @@
 package org.common.atms;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -80,14 +82,50 @@ public class Atm {
 	
 	public String getCash(Account account, int money) {
 		try {
+			int moneyOrig = money;
 			account.setAmount(account.getAmount() - money);
+			ArrayList<Integer> nominals = new ArrayList<Integer>();
+			for ( int bill : bills.keySet() ) {
+				nominals.add(bill);
+			}
+			if (nominals.isEmpty()) {
+				return "Not enough money in ATM. Please, try again later.";
+			}
+			Collections.sort(nominals);
+			HashMap<Integer, Integer> foundNominals = new HashMap<Integer, Integer>();
+			for(int i = 0, l = nominals.size(); i < l; ++i) {
+				int nominal = nominals.get(i);
+				int billCountTotal = bills.get(nominal);
+				int bill = billCountTotal * nominal;
+				if (bill > money) continue;
+				int billCount = 0;
+				
+				while(bill < money) { // ( <= )
+					money -= bill;
+					++billCount;
+				}
+				if (billCountTotal == billCount) {
+					bills.remove(nominal);
+				}
+				foundNominals.put(nominal, billCount);
+			}
 			
-					
+			if (money > 0) {
+				return "rest: "+money;
+			}
+			
+			String nominalsText = "For "+moneyOrig+" you will get next nominals: ";
+			
+			for(int bill : foundNominals.keySet()){
+				nominalsText += bill + " x " + foundNominals.get(bill) +"; ";
+		    }
+			
+			return nominalsText;
+			
 		} catch (Exception e) {
 			account.setAmount(account.getAmount() + money);
 			return "Please, try again later.";
 		}
-		return "Operation successfull. Dont forget money and you card! See you next time. Bye.";
 	}
 	
 }
