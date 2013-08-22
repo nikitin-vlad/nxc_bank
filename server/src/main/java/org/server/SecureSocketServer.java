@@ -13,6 +13,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
+import org.common.atms.Atm;
 import org.common.configs.SSLConfiguration;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationResponseStatus;
@@ -31,7 +32,8 @@ public class SecureSocketServer {
             	SSLSocket sslSocket = (SSLSocket) serverSocket.accept();
                 
                 String atmName = this.getAtmName(sslSocket);
-                if (atmName == null) {
+                Atm atm = Server.getAtms().getAtm(atmName);
+                if (atm == null) {
                 	ObjectOutputStream out = null;
                 	try {
                     	out = new ObjectOutputStream(sslSocket.getOutputStream());
@@ -46,7 +48,7 @@ public class SecureSocketServer {
                 	continue;
                 }
                 
-                ClientHandler cliThread = clientFactory.create(sslSocket);
+                ClientHandler cliThread = clientFactory.create(sslSocket, atm);
                 cliThread.start();
             }
 
