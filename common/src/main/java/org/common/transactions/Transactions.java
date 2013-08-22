@@ -2,13 +2,18 @@ package org.common.transactions;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.common.configs.Config;
+import org.common.conversion.XMLConversion;
 
-@XmlRootElement
+
 public class Transactions {
-	@XmlElement(name = "TransactionList")
+
 	private ArrayList<Transaction> data = new ArrayList<Transaction>();
+    private static String path = "common/target/resources" + Config.transactionsFile;
+	
+	public Transactions() {
+        Transactions transactions = XMLConversion.unMarshall(Transactions.class, path);
+	}
 
 	public ArrayList<Transaction> getData() {
 		return data;

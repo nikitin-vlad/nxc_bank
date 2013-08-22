@@ -3,7 +3,9 @@ package org.common.transactions;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Transaction {
 
 	private String cardNumber;

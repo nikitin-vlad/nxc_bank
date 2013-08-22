@@ -1,35 +1,80 @@
 package org.common.atms;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.common.conversion.UnmarshallAtms;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.common.conversion.XMLConversion;
 import org.hamcrest.Matchers;
 
 import static ch.lambdaj.Lambda.*;
 
 
-
+@XmlRootElement
 public class Atms {
-//	@XmlElement(name = "AtmList")
+	@XmlElement(name = "atm")
 	private ArrayList<Atm> data = new ArrayList<Atm>();
 	private boolean blocked = false;
-	
-	public Atms() {
+//	private static String path = "common/target/resources" + Config.atmsFile;
+//	private static String path = "target/classes" + Config.atmsFile;
+	private static String path = "common/src/main/java/org/common/atms/atms.xml";
+
+//	private Atms() {
 //		for (int i = 0, l = 5; i < l; i++) {
 //			Atm atm = new Atm();
 //			atm.setId("ATM-"+(i+1));
 //			atm.setStatus(true);
+//			HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
+//			bills.put(12 + 5*i, 10 + 2*i);
+//			bills.put(12 + 2*i, 10 + 6*i);
+//			bills.put(12 + 9*i, 10 + 7*i);
+//			atm.setBills(bills);
 //			data.add(atm);
-//		}	
-		Atms atms = UnmarshallAtms.unMarshall();
-		data.addAll((Collection<? extends Atm>) atms);
+//			XMLConversion.marshall(this, path);
+//		}
+//      Atms atms = UnmarshallAtms.unMarshall(path);
+//		Atms atms = XMLConversion.unMarshall(Atms, path);
+//		data.addAll((Collection<? extends Atm>) atms);
+//	}
+	
+	public ArrayList<Atm> init(){
+		Atms atms = XMLConversion.unMarshall(Atms.class, path);
+        System.out.println(atms.toString());
+        int i = 1;
+		try{
+			while(atms.getAtm(i) != null){
+				data.add(atms.getAtm(i));
+				i++;
+			}
+		}
+		catch(ArrayIndexOutOfBoundsException e){
+			e.getMessage();			
+		}
+
+		return data;
 	}
+	
+//	public static void main(String[] args){
+//		Atms atms = new Atms();
+//		Atm atm = new Atm();
+//		atm.setId("ATM-" + 1530);
+//		atm.setStatus(true);
+//		HashMap<Integer, Integer> bills = new HashMap<Integer, Integer>();
+//		bills.put(12 + 50, 10 + 20);
+//		bills.put(12 + 20, 10 + 60);
+//		bills.put(12 + 90, 10 + 70);
+//		atm.setBills(bills);
+//		atms.addAtm(atm);
+//		atms.removeAtm("ATM-1530");
+//		List<Atm> atsm = atms.init();
+//		System.out.println(atsm.toString());
+//	}
 	
 	public void clear() {
 		data.clear();
-	}	
+	}
 	
 	public Atm getAtm(String id) {
 		List<Atm> accounts = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
@@ -38,7 +83,12 @@ public class Atms {
 	}
 	
 	public void addAtm(Atm atm) {
+		//this.init();
 		data.add(atm);
+        Atms atms = new Atms();
+        atms.data = data;
+		//XMLConversion.marshall(this, path);
+		XMLConversion.marshall(atms, path);
 	}
 
 	public boolean isBlocked() {
@@ -62,11 +112,16 @@ public class Atms {
 	}
 
 	public void removeAtm(String id) {
+		//this.init();
 		List<Atm> atmList = filter(having(on(Atm.class).getId(), Matchers.equalTo(id)), data);
 		if (!atmList.isEmpty()) {
 			Atm atm = atmList.get(0);
 			data.remove(atm);
 		}
+        Atms atms = new Atms();
+        atms.data = data;
+		//XMLConversion.marshall(this, path);
+		XMLConversion.marshall(atms, path);
 	}
 
 	public boolean isExisting(String id) {
@@ -75,5 +130,5 @@ public class Atms {
 			return false;
 		}
 		return true;
-	}	
+	}
 }

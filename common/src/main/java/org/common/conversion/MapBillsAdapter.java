@@ -6,18 +6,18 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class MapBillsAdapter extends XmlAdapter<MapBillsAdapter.AdaptedMap, Map<Integer, Integer>> {
      
     public static class AdaptedMap {
-        public List<Entry> entry = new ArrayList<Entry>();
+        public List<Bill> bill = new ArrayList<Bill>();
     }
      
-    public static class Entry {
+    public static class Bill {
         public Integer key;
         public Integer value;
     }
  
     public Map<Integer, Integer> unmarshal(AdaptedMap adaptedMap) throws Exception {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for(Entry entry : adaptedMap.entry) {
-            map.put(entry.key, entry.value);
+        for(Bill bill : adaptedMap.bill) {
+            map.put(bill.key, bill.value);
         }
         return map;
     }
@@ -25,10 +25,10 @@ public class MapBillsAdapter extends XmlAdapter<MapBillsAdapter.AdaptedMap, Map<
     public AdaptedMap marshal(Map<Integer, Integer> map) throws Exception {
         AdaptedMap adaptedMap = new AdaptedMap();
         for(Map.Entry<Integer, Integer> mapEntry : map.entrySet()) {
-            Entry entry = new Entry();
-            entry.key = mapEntry.getKey();
-            entry.value = mapEntry.getValue();
-            adaptedMap.entry.add(entry);
+            Bill bill = new Bill();
+            bill.key = mapEntry.getKey();
+            bill.value = mapEntry.getValue();
+            adaptedMap.bill.add(bill);
         }
         return adaptedMap;
     }

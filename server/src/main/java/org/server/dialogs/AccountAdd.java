@@ -25,8 +25,8 @@ public class AccountAdd extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField accountNumber, accountPassword;
-	private JFormattedTextField accountAmount;
+	private JTextField accountNumber;
+	private JFormattedTextField accountAmount, accountPassword;
 	private JCheckBox accountStatus;
 	private boolean editMode;
 	private Account account;
@@ -77,11 +77,11 @@ public class AccountAdd extends JDialog {
 		lblPassword.setBounds(10, 62, 194, 14);
 		contentPanel.add(lblPassword);
 		
-		accountPassword = new JTextField();
+		accountPassword = new JFormattedTextField();
 		accountPassword.setColumns(10);
 		accountPassword.setBounds(10, 87, 194, 20);
 		if (editMode) {
-			accountPassword.setText(account.getPassword());
+			accountPassword.setText(String.valueOf(account.getPassword()));
 		}
 		contentPanel.add(accountPassword);
 		
@@ -141,7 +141,7 @@ public class AccountAdd extends JDialog {
 				}				
 				if (editMode) {
 					account.setAmount(Double.parseDouble(accountAmount.getText()));
-					account.setPassword(accountPassword.getText());
+					account.setPassword(Integer.parseInt(accountPassword.getText()));
 					account.setStatus(accountStatus.isSelected());
 				} else {
 					if (Server.getAccounts().isExisting(accountNumber.getText())) {
@@ -154,7 +154,7 @@ public class AccountAdd extends JDialog {
 					Account account = new Account();
 					account.setAmount(Double.parseDouble(accountAmount.getText()));
 					account.setCardNumber(accountNumber.getText());
-					account.setPassword(accountPassword.getText());
+					account.setPassword(Integer.parseInt(accountPassword.getText()));
 					account.setStatus(accountStatus.isSelected());
 					Server.getAccounts().addAccount(account);
 				}

@@ -1,22 +1,20 @@
 package org.atm;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 //import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
-import java.util.Arrays;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.common.configs.Config;
+import org.common.configs.SSLConfiguration;
 import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
 import org.common.operations.OperationType;
@@ -24,44 +22,38 @@ import org.common.operations.OperationType;
 public class SecureSocketClient {
 	
 	private SSLSocket socket;
-	boolean run = true;
+	private KeyStore keyStore;
 	
-    public SecureSocketClient() {
-
-        String storepass = "clientstorepass";
-        String keypass = "clientkeypass";
-
-        String keystoreLocation = Config.keystoreLocation;
-        
-        char[] keyStorePassword = storepass.toCharArray();
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/ssl/client.jks");
-        System.setProperty("javax.net.ssl.trustStorePassword", storepass);
-
-
+    public SecureSocketClient(SSLConfiguration config) {
         try {
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-//            keyStore.load(new FileInputStream(keystoreLocation), keyStorePassword);
-            keyStore.load(SecureSocketClient.class.getResourceAsStream(keystoreLocation), keyStorePassword);
-            
-            Certificate certificate = keyStore.getCertificate("myclient");
-            System.out.println(Arrays.hashCode(certificate.getPublicKey().getEncoded()));
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory
-                    .getInstance("SunX509");
-            keyManagerFactory.init(keyStore, keypass.toCharArray());
-            SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            SSLSocket cliSocket = (SSLSocket) sslSocketFactory.createSocket(
-                    "localhost", 8888);
-            cliSocket.startHandshake();
-            
-            this.socket = cliSocket;
-            this.handleSocket();
-            
+        	this.initKeyStore(this.getClass().getClassLoader().getResource(config.getJkskeyPath()).getPath(), config.getStorepass());
+        	this.initSocket(config.getKeypass(), config.getPort());
+        	this.handleSocket();
         } catch (Exception e) {
-            System.err.println(e.toString());
+            e.printStackTrace();
         }
     }
+	
+    protected void initKeyStore (String keystoreLocation, String storepass) throws Exception {
+        System.setProperty("javax.net.ssl.trustStore", keystoreLocation);
+        System.setProperty("javax.net.ssl.trustStorePassword", storepass);
+        
+        keyStore = KeyStore.getInstance("JKS");
+        keyStore.load(new FileInputStream(keystoreLocation), storepass.toCharArray());
+	}
+	
+    protected void initSocket (String keypass, int port) throws Exception {
+    	KeyManagerFactory keyManagerFactory = KeyManagerFactory
+                .getInstance("SunX509");
+        keyManagerFactory.init(keyStore, keypass.toCharArray());
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        SSLSocket cliSocket = (SSLSocket) sslSocketFactory.createSocket(
+                "localhost", port);
+        cliSocket.startHandshake();
+        this.socket = cliSocket;
+	}
     
     public void handleSocket () {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -73,7 +65,7 @@ public class SecureSocketClient {
 	        }
 	        socketReader = new ObjectInputStream(socket.getInputStream());
         	socketWriter = new ObjectOutputStream(socket.getOutputStream());
-	        while (run) {
+	        while (true) {
 	        	OperationRequest request = this.getRequestObject(in);
 	        	socketWriter.writeObject(request);
 	        	socketWriter.flush();
@@ -119,13 +111,11 @@ public class SecureSocketClient {
 	    	id = Integer.parseInt(reader.readLine());
 	    	if (id < values.length) {
 		    	operationType = values[id];
-		    	System.out.println("test");
 		    	break;
 	    	} else {
 	    		System.out.println("Wrong operatoin id, try again");
 	    	}
     	}
-    	System.out.println("test");
     	if (operationType == OperationType.GetCash ||
     			operationType == OperationType.ReloadAmount) {
     		System.out.println("Enter ammount");

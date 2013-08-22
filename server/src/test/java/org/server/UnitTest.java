@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-
+import org.common.configs.SSLConfiguration;
 import org.junit.Test;
 
 public class UnitTest {
