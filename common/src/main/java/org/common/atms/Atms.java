@@ -103,4 +103,8 @@ public class Atms {
 		return true;
 	}
 
+	public  ArrayList<Atm> getAll () {
+		return data;
+	}
+
 }

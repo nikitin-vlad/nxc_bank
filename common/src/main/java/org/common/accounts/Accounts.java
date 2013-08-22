@@ -21,9 +21,7 @@ public class Accounts {
 	@XmlElement(name = "account")
 	private ArrayList<Account> data = new ArrayList<Account>();
 	private boolean blocked = false;
-//    private static String path = "common/target/resources" + Config.accountsFile;
 	private static String path = Config.accountsFile;
-//    private static String path = "common/src/main/java/org/common/accounts/accounts.xml";
 
 	public void clear() {
 		data.clear();
@@ -127,5 +125,9 @@ public class Accounts {
 	public void store() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public ArrayList<Account> getAll() {
+		return data;
 	}
 }
