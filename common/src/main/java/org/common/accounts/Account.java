@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Account {
 	
 	private String cardNumber;
-	private String password;
+	private int password;
 	private boolean status;
 	private Double amount;
 	
@@ -20,12 +20,12 @@ public class Account {
 		this.cardNumber = cardNumber;
 	}
 	
-	public String getPassword() {
+	public int getPassword() {
 		return password;
 	}
 	
 	@XmlElement
-	public void setPassword(String password) {
+	public void setPassword(int password) {
 		this.password = password;
 	}
 	

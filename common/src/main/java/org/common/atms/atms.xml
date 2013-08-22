@@ -1,54 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <atms>
-    <AtmList>
-        <bills>
-            <entry>
-                <key>12</key>
-                <value>10</value>
-            </entry>
-        </bills>
-        <id>ATM-1</id>
+    <atm>
+        <bills/>
+        <id>289</id>
         <status>true</status>
-    </AtmList>
-    <AtmList>
-        <bills>
-            <entry>
-                <key>13</key>
-                <value>12</value>
-            </entry>
-        </bills>
-        <id>ATM-2</id>
-        <status>true</status>
-    </AtmList>
-    <AtmList>
-        <bills>
-            <entry>
-                <key>14</key>
-                <value>14</value>
-            </entry>
-        </bills>
-        <id>ATM-3</id>
-        <status>true</status>
-    </AtmList>
-    <AtmList>
-        <bills>
-            <entry>
-                <key>15</key>
-                <value>16</value>
-            </entry>
-        </bills>
-        <id>ATM-4</id>
-        <status>true</status>
-    </AtmList>
-    <AtmList>
-        <bills>
-            <entry>
-                <key>16</key>
-                <value>18</value>
-            </entry>
-        </bills>
-        <id>ATM-5</id>
-        <status>true</status>
-    </AtmList>
+    </atm>
     <blocked>false</blocked>
 </atms>

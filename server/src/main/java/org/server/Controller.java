@@ -19,7 +19,8 @@ public class Controller {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid card number");
 		}
 		
-		if ( !account.getPassword().equals(String.valueOf(request.getPass())) ) {
+		//if ( !account.getPassword().equals(Integer.valueOf(request.getPass())) ) {
+		if ( !(account.getPassword() == Integer.valueOf(request.getPass())) ) {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid password");
 		}
 		
