@@ -11,3 +11,4 @@
 atm/.classpath
 server/.classpath
 common/.classpath
+*/.idea
