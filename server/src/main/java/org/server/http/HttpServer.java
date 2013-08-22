@@ -2,18 +2,13 @@ package org.server.http;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-
 import org.common.accounts.Account;
-import org.common.atms.Atm;
 import org.server.Server;
 
 public class HttpServer {
@@ -51,7 +46,7 @@ public class HttpServer {
             this.is = s.getInputStream();
             this.os = s.getOutputStream();
             this.br = new BufferedReader(new InputStreamReader(is));
-            command = getUri();
+            setCommand(getUri());
             headers = readInputHeaders();
             System.out.println("helllo");
         }
@@ -138,5 +133,13 @@ public class HttpServer {
             sun.misc.BASE64Decoder dec = new sun.misc.BASE64Decoder();  
             return new String(dec.decodeBuffer(userpassEncoded));  
         }
+
+		public String getCommand() {
+			return command;
+		}
+
+		public void setCommand(String command) {
+			this.command = command;
+		}
     }
 }
