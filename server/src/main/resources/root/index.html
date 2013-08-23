@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NXC Bank - Web Client</title>
+    <link type="text/css" href="css/jquery.bxslider.css" rel="stylesheet">
+    <script src="js/jquery-2.0.3.min.js"></script>
+    <script src="js/jquery.bxslider.min.js"></script>
+	 <style>
+		
+		body {
+			margin:50px 0px; padding:0px;
+			text-align:center;
+		}
+			
+		#content {
+			width:500px;
+			margin:0px auto;
+			text-align:left;
+			padding:15px;
+		}		
+		
+	 	.bx-viewport {
+	 		max-height: 320px !important;
+	 		max-width: 640px !important;
+	 	}
+	 	
+		.container {
+			width: 100%;
+			height: 320px;
+		}
+		
+		.data {
+			width: 425px;
+			height: 290px;
+		}
+		
+		.data.result {
+			overflow-x: hidden;
+			overflow-y: auto;   
+		}
+		li {
+			list-style:none;
+	 	}
+	 	ul.menu {
+	 		padding: 0;
+	 	}
+	 </style>    
+</head>
+<body>
+<div id="content">
+		<ul class="bxslider">
+		  <li>
+		  	<div class="container">
+		  		<div class="data operations">
+		  			<span>Press operation number on keyboard:</span>
+		  			<ul class="menu" style="margin-top: 15px">
+		  				<li>[1] Show balance</li>
+		  				<li>[2] Show transactions</li>
+		  			</ul>
+		  		</div>
+		  	</div>
+		  </li>
+		  
+		  <li>
+		  	<div class="container">
+		  		<div class="data result">
+		  			<ul class="menu" style="margin-bottom: 15px">
+		  				<li>[0] Back</li>
+		  			</ul>
+					<div class="view"></div>		  			
+		  		</div>
+		  	</div>  
+		  </li>
+		  
+		</ul>
+</div>
+  <script>
+    $(function() {
+    	window.slider = $('.bxslider').bxSlider({
+    		  mode: 'fade',
+    		  pager: false,
+    		  controls: false
+   		});
+    	
+    	var inProgress = false,
+    		slide = 0,
+    		lastOperationCode = null,
+    		wrapper = $(".bx-viewport"),
+    		loaderClass = "bx-loading",
+    		undef = function(arg) {
+    			return (typeof arg === "undefined");
+    		},
+    		view = $(".container .data.result .view"),
+    		mock = false;
+    	
+		$(window).on('hashchange', function() {
+			mock = (window.location.hash == "#mock");
+		});    		
+    		
+    	navigator.sayswho = (function(){
+    		  var N= navigator.appName, ua= navigator.userAgent, tem;
+    		  var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+    		  if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+    		  M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
+    		  return M;
+   		})();    	
+    	
+    	var keypress = function(event) {
+    		if (inProgress) return;
+    		var keyCode = (event.which) ? event.which : event.keyCode,
+   				url = "";
+    		switch(keyCode) {
+	    		case 48: //back
+	    			if (!slide) return;
+	    			slide = 0;
+	    			lastOperationCode = null;
+	    			return slider.goToSlide(slide);
+	    		break;
+	    		case 49: //balance
+	    			if (slide) return;
+	    			slide = 1;
+	    			lastOperationCode = 1;
+	    			url = "/operations/balance";
+	    		break;
+	    		case 50: //transactions
+	    			if (slide) return;
+	    			slide = 1;
+	    			lastOperationCode = 2;
+	    			url = "/operations/transactions";
+	    		break;
+    			default:
+    				slide = 0;
+    				lastOperationCode = null;
+    				return;
+   				break;
+    		}
+    		runOperation(url);
+    	},
+    	runOperation = function(url) {
+    		var hide = function() {
+    			inProgress = false;
+    			wrapper.removeClass(loaderClass);
+    			lastOperationCode = null;
+    		};
+    		if (inProgress) return;
+    		inProgress = true;
+    		if (mock) {
+				url = "mock"+url+".json";
+    		}
+    		wrapper.addClass(loaderClass);
+    		$.ajax({
+    			dataType: "json",
+    			url: url,
+    			success: function(data) {
+    				var result = "Oops, something goes wrong...";
+    				switch(lastOperationCode) {
+	    				case 1:
+	    					if (undef(data) || undef(data.amount)) {
+	    						result = "Server error. Please try again.";
+	    					} else {
+	    						result = "Current balance: "+data.amount;
+	    					}
+	   					break;
+	    				case 2:
+	    					if (undef(data)) {
+	    						result = "Server error. Please try again.";
+	    					} else if (!data.length) {
+	    						result = "Transactions list empty!"
+	    					} else {
+	    						result = "Transactions list:<br />";
+	    						for(var i = 0, l = data.length; i < l; ++i) {
+	    							result += "["+data[i].date+"] "+data[i].name+": "+data[i].data+"<br />";
+	    						}
+	    					}
+	   					break;
+    				}
+    				view.html(result);
+    				slider.goToSlide(slide);
+    				hide();
+    				
+    			},
+    			error: function(jqxhr, textStatus, error) {
+    				console.log(jqxhr, textStatus, error)
+    				slide = 0;
+    				hide();
+    			}
+   			});
+    	};
+    	
+    	if (navigator.sayswho == "firefox") {
+    	    $(document).keypress(keypress);
+    	} else {
+    	    $(document).keydown(keypress);
+    	}    	
+    });
+  </script>
+</body>
+</html>
