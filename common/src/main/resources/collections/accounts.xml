@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<accounts></accounts>
+<accounts>
+    <account>
+        <amount>1001.0</amount>
+        <cardNumber>100</cardNumber>
+        <password>100</password>
+        <status>true</status>
+    </account>
+    <account>
+        <amount>1000.0</amount>
+        <cardNumber>10000</cardNumber>
+        <password>1000</password>
+        <status>true</status>
+    </account>
+    <blocked>false</blocked>
+</accounts>

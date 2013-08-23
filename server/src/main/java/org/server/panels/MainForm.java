@@ -42,7 +42,7 @@ public class MainForm {
 
 	public MainForm() {
 		initialize();
-	}
+	}	
 
 	private void initialize() {
 		frmBankServer = new JFrame();
@@ -180,7 +180,7 @@ public class MainForm {
 		        if (e.getValueIsAdjusting() == false) {
 		        	 
 		            if (accountsList.getSelectedIndex() != -1) {
-		            	System.out.println(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString() );
+		            	//System.out.println(accountsListModel.getElementAt( accountsList.getSelectedIndex()).toString() );
 		            }
 		        }
 			}
@@ -193,7 +193,7 @@ public class MainForm {
 				if (e.getValueIsAdjusting() == false) {
 					
 					if (atmsList.getSelectedIndex() != -1) {
-						System.out.println(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString() );
+						//System.out.println(atmsListModel.getElementAt( atmsList.getSelectedIndex()).toString() );
 					}
 				}
 			}
