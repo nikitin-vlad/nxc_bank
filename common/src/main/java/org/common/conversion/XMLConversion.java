@@ -22,7 +22,7 @@ public class XMLConversion {
 				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		 
 				jaxbMarshaller.marshal(object, file);
-				jaxbMarshaller.marshal(object, System.out);
+				//jaxbMarshaller.marshal(object, System.out);
 		 
 	      } catch (JAXBException e) {
 				e.printStackTrace();

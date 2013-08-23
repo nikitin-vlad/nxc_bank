@@ -7,6 +7,7 @@ import static ch.lambdaj.Lambda.on;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.common.configs.Config;
@@ -15,7 +16,7 @@ import org.hamcrest.Matchers;
 
 @XmlRootElement
 public class Transactions {
-
+    @XmlElement(name = "transaction")
 	private ArrayList<Transaction> data = new ArrayList<Transaction>();
 	private static String path = Config.transactionsFile;
 	

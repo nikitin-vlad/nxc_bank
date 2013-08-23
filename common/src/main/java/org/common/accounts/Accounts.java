@@ -41,6 +41,13 @@ public class Accounts {
 
 		return data;
 	}
+
+//    public Accounts getAccounts(){
+//        Accounts accs = new Accounts();
+//        data = this.init();
+//        accs.data = data;
+//        return accs;
+//    }
 	
 	public Accounts getAccounts(){
 		Accounts accs = XMLConversion.unMarshall(Accounts.class, path);

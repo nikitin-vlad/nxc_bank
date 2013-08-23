@@ -22,7 +22,6 @@ public class Atms {
 	
 	public ArrayList<Atm> init(){
 		Atms atms = XMLConversion.unMarshall(Atms.class, path);
-        System.out.println(atms.toString());
         int i = 1;
 		try{
 			while(atms.getAtm(i) != null){
