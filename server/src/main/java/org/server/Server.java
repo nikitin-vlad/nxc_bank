@@ -86,7 +86,7 @@ public class Server {
 	}
 
 	public static void pushDataToStorage() {
-		accounts.store();
-		atms.store();
+		if (accounts != null) accounts.store();
+		if (atms != null) atms.store();
 	}
 }

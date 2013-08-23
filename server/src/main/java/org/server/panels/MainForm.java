@@ -21,7 +21,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
 import org.common.accounts.Account;
+import org.common.accounts.Accounts;
 import org.common.atms.Atm;
+import org.common.atms.Atms;
 import org.server.Server;
 import org.server.dialogs.AccountAdd;
 import org.server.dialogs.AtmAdd;
@@ -279,8 +281,10 @@ public class MainForm {
 	public void loadAtms(boolean checkBlocked) {
 		if (checkBlocked == true && Server.getAtms().isBlocked()) return;
 		atmsListModel.clear();
-		for(int i = 0, l = Server.getAtms().count(); i <= l; i++) {
-			Atm atm = Server.getAtms().getAtm(i);
+		Atms atms = Server.getAtms();
+		if (atms == null || atms.count() == 0) return;
+		for(int i = 0, l = atms.count(); i <= l; i++) {
+			Atm atm = atms.getAtm(i);
 			if (atm == null) continue;
 			atmsListModel.addElement(atm.getId());			
 		}
@@ -289,8 +293,10 @@ public class MainForm {
 	public void loadAccounts(boolean checkBlocked) {
 		if (checkBlocked == true && Server.getAccounts().isBlocked()) return;
 		accountsListModel.clear();
-		for(int i = 0, l = Server.getAccounts().count(); i <= l; i++) {
-			Account account = Server.getAccounts().getAccount(i);
+		Accounts accounts = Server.getAccounts();
+		if (accounts == null || accounts.count() == 0) return;
+		for(int i = 0, l = accounts.count(); i <= l; i++) {
+			Account account = accounts.getAccount(i);
 			if (account == null) continue;
 			accountsListModel.addElement(account.getCardNumber());			
 		}
