@@ -1,13 +1,15 @@
 package org.server.http;
 
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import org.common.accounts.Account;
 import org.common.operations.OperationRequest;
@@ -71,19 +73,56 @@ public class HttpServer {
             		OperationRequest request;
             		OperationResponse res = null;
             		String[] logPass = getUserPassDecoded(auth).split(":");
+            		String htmlRoot = this.getClass().getClassLoader().getResource("root").getPath();
+            		
+            		FileInputStream fis;
+            		File file;
+            		String responseHeaders;
+            		byte[] buffer;
             		switch (command)
             		{
-            		case "/operations/balace":
+            		case "/operations/balance":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Balance);
             			res = controller.handleRequest(request);
+            			writeResponse("{\"amount\":" + res.getMessage() + "}");
+            			break;
             		case "/operations/transactions":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Transactions);
             			res = controller.handleRequest(request);
-            		}
-            		if (res != null && res.getStatus() == OperationResponseStatus.OK)
             			writeResponse(res.getMessage());
-            		else
-            			writeResponse("error");
+            			break;
+            		case "/":
+            			file = new File(htmlRoot + "/index.html");
+            			fis = new FileInputStream(file);
+            			buffer = new byte[(int) file.length()];
+            			fis.read(buffer);
+            			responseHeaders = "HTTP/1.1 200 OK\r\n" +
+            					"Content-Type: text/html\r\n" +
+            					"Connection: close\r\n\r\n";
+            			os.write(responseHeaders.getBytes());
+            			os.write(buffer);
+            			os.flush();
+            			break;
+            		default:
+            			file = new File(htmlRoot + command);
+            			if (file.exists()) {
+	            			fis = new FileInputStream(file);
+	            			buffer = new byte[(int) file.length()];
+	            			fis.read(buffer);
+	            			responseHeaders = "HTTP/1.1 200 OK\r\n" +
+	            					"Content-Type: text/html\r\n" +
+	            					"Connection: close\r\n\r\n";
+	            			os.write(responseHeaders.getBytes());
+	            			os.write(buffer);
+	            			os.flush();
+            			} else {
+            				responseHeaders = "HTTP/1.1 404 NOT FOUND\r\n" +
+	            					"Content-Type: text/html\r\n" +
+	            					"Connection: close\r\n\r\n";
+	            			os.write(responseHeaders.getBytes());
+	            			os.flush();
+            			}
+            		}
             	}
             } catch (Throwable t) {
                 /*do nothing*/

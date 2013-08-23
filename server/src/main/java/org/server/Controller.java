@@ -17,9 +17,6 @@ public class Controller {
 		if (account == null) {
 			return new OperationResponse(OperationResponseStatus.WrongCredentials, "Invalid card number");
 		}
-		if (atm == null) {
-			return new OperationResponse(OperationResponseStatus.WrongAtm, "You are operating on broken ATM! Find another one please.");
-		}
 		
 		int money;
 		
