@@ -45,6 +45,7 @@ public class AccountAdd extends JDialog {
 		addWindowListener(new WindowAdapter() {
             public void windowDeactivated(WindowEvent e) {
                 Server.getAccounts().setBlocked(false);
+                Server.updateData();
             }
 		});
 		setModal(true);
@@ -159,7 +160,6 @@ public class AccountAdd extends JDialog {
 					Server.getAccounts().addAccount(account);
 				}
 				close();
-				Server.updateData();
 			}
 		};
 	}

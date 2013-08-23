@@ -43,6 +43,7 @@ public class AtmAdd extends JDialog {
 		addWindowListener(new WindowAdapter() {
             public void windowDeactivated(WindowEvent e) {
                 Server.getAtms().setBlocked(false);
+                Server.updateData();
             }
 		});
 		setModal(true);
@@ -128,7 +129,6 @@ public class AtmAdd extends JDialog {
 					Server.getAtms().addAtm(atm);
 				}
 				close();
-				Server.updateData();
 			}
 		};
 	}

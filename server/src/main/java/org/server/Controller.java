@@ -41,6 +41,7 @@ public class Controller {
 			account.setAmount(account.getAmount() + money);
 			return new OperationResponse(OperationResponseStatus.OK, "Your card balance was successfully changed, your current balance: " + account.getAmount());
 		case Transactions:
+			return new OperationResponse(OperationResponseStatus.OK, "");			
 		default:
 			break;
 			
