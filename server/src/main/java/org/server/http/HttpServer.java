@@ -61,7 +61,7 @@ public class HttpServer {
             try {
             	String auth = headers.get("Authorization");
             	if (!allowUser(auth)) { 
-            		String response = "HTTP 401 Not Authorized\r\n" + 
+            		String response = "HTTP/1.1 401 Not Authorized\r\n" + 
             					"WWW-Authenticate: Basic realm=\"insert realm\"\r\n" + 
             					"Connection: close\r\n\r\n";
             		os.write(response.getBytes());
