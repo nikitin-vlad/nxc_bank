@@ -9,23 +9,17 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import org.common.accounts.Account;
+import org.common.accounts.Accounts;
 import org.common.operations.OperationRequest;
 import org.common.operations.OperationResponse;
-import org.common.operations.OperationResponseStatus;
 import org.common.operations.OperationType;
 import org.server.Controller;
 import org.server.Server;
 
 public class HttpServer {
-	private static Hashtable<String, String> validUsers = new Hashtable<String, String>();
-	static {
-    	for (Account ac : Server.getAccounts().getAll() ) {
-    		validUsers.put(ac.getCardNumber() + ":" + String.valueOf(ac.getPassword()), "authorized");
-    	}		
-	}
+	private static Accounts accounts = Server.getAccounts();
 	
     public HttpServer(int port) {
     	try {
@@ -84,24 +78,20 @@ public class HttpServer {
             		case "/operations/balance":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Balance);
             			res = controller.handleRequest(request);
-            			writeResponse("{\"amount\":" + res.getMessage() + "}");
+            			String json = "{\"amount\":" + res.getMessage() + "}";
+            			writeResponse(json.getBytes());
             			break;
             		case "/operations/transactions":
             			request = new OperationRequest(logPass[0], Integer.parseInt(logPass[1]), OperationType.Transactions);
             			res = controller.handleRequest(request);
-            			writeResponse(res.getMessage());
+            			writeResponse(res.getMessage().getBytes());
             			break;
             		case "/":
             			file = new File(htmlRoot + "/index.html");
             			fis = new FileInputStream(file);
             			buffer = new byte[(int) file.length()];
             			fis.read(buffer);
-            			responseHeaders = "HTTP/1.1 200 OK\r\n" +
-            					"Content-Type: text/html\r\n" +
-            					"Connection: close\r\n\r\n";
-            			os.write(responseHeaders.getBytes());
-            			os.write(buffer);
-            			os.flush();
+            			writeResponse(buffer);
             			break;
             		default:
             			file = new File(htmlRoot + command);
@@ -109,12 +99,7 @@ public class HttpServer {
 	            			fis = new FileInputStream(file);
 	            			buffer = new byte[(int) file.length()];
 	            			fis.read(buffer);
-	            			responseHeaders = "HTTP/1.1 200 OK\r\n" +
-	            					"Content-Type: text/html\r\n" +
-	            					"Connection: close\r\n\r\n";
-	            			os.write(responseHeaders.getBytes());
-	            			os.write(buffer);
-	            			os.flush();
+	            			writeResponse(buffer);
             			} else {
             				responseHeaders = "HTTP/1.1 404 NOT FOUND\r\n" +
 	            					"Content-Type: text/html\r\n" +
@@ -135,13 +120,12 @@ public class HttpServer {
             }
         }
 
-        private void writeResponse(String s) throws Exception {
+        private void writeResponse(byte[] b) throws Exception {
             String response = "HTTP/1.1 200 OK\r\n" +
                     "Content-Type: text/html\r\n" +
-                    "Content-Length: " + s.length() + "\r\n" +
                     "Connection: close\r\n\r\n";
-            String result = response + s;
-            os.write(result.getBytes());
+            os.write(response.getBytes());
+            os.write(b);
             os.flush();
         }
 
@@ -173,8 +157,10 @@ public class HttpServer {
         		return false;
         	}
           
+        	String[] logPass = userpassDecoded.split(":");
+        	Account acc = accounts.getAccount(logPass[0], Integer.parseInt(logPass[1]));
             // Check our user list to see if that user and password are "allowed"  
-            if ("authorized".equals(validUsers.get(userpassDecoded))) {  
+            if (acc != null && acc.isStatus()) {  
                 return true;  
             } else {  
                 return false;  
